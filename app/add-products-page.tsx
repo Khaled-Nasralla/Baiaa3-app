@@ -8,7 +8,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -140,14 +139,7 @@ export default function AddProductPage() {
           value={description}
           onChangeText={setDescription}
         />
-
-        {/* Multi Image Picker */}
-        <TouchableOpacity
-          onPress={selectImage}
-          style={styles.imagePickerButton}
-        >
-          <Text style={styles.imagePickerButtonText}>اختر عدة صور</Text>
-        </TouchableOpacity>
+        
 
         {imagelist.length > 0 && (
           <View style={styles.imagesPreviewContainer}>
