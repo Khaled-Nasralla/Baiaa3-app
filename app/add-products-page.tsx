@@ -24,30 +24,6 @@ export default function AddProductPage() {
   const [description, setDescription] = useState("");
 
 
-  const pickImage = async () => {
-    const permission =
-      await imagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permission.granted) {
-      Alert.alert("الصور", "لازم تعطي صلاحية للوصول للصور");
-      return;
-    }
-
-    const result = await imagePicker.launchImageLibraryAsync({
-      mediaTypes: imagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      quality: 1,
-      selectionLimit:100
-    });
-
-    if (!result.canceled && result.assets?.length > 0) {
-
-      for (const asset of result.assets) {
-
-      }
-      const selectedUri = result.assets[0].uri;
-      setImage(selectedUri);
-    }
-  };
 
   // Multi-image picker (react-native-image-picker)
   const selectImage = async () => {
