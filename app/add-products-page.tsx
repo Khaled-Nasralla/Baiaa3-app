@@ -7,7 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AddProductPage() {}
   
-  const [image, setImage] = useState ("");
+  const [image, setImage] = useState<string | null>(null);
   const [imagelist, setImageList] = useState<Asset[] | { id: string; uri: string }[]>([]);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -15,24 +15,25 @@ export default function AddProductPage() {}
   const [description, setDescription] = useState("");
 
 
-const result = await imagePicker.launchImageLibraryAsync({
-        mediaTypes: imagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        quality: 1,
-      });
+  const result = await imagePicker.launchImageLibraryAsync({
+    mediaTypes: imagePicker.MediaTypeOptions.Images,
+    allowsEditing: true,
+    quality: 1,
+  });
 
-      console.log('ImagePicker result:', result);
+  console.log('ImagePicker result:', result);
 
-      const uri = result.assets?.[0]?.uri;
+  const uri = result.assets?.[0]?.uri;
 
-      if (!result.canceled && result.assets && result.assets.length > 0) {
+  if (!result.canceled && result.assets && result.assets.length > 0) {
     const selectedUri = result.assets[0].uri;
     setImage(selectedUri);
-} else if (result.canceled) {
+  } else if (result.canceled) {
     console.log('Image selection was cancelled');
-} else {
+  } else {
     console.log('No assets found');
-}
+  }
+
 
   const pickImage = async () => {
     const permission = await imagePicker.requestMediaLibraryPermissionsAsync();
