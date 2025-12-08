@@ -2,13 +2,15 @@ import { ThemedView } from "@/components/themed-view";
 import * as imagePicker from "expo-image-picker";
 import React, { useState } from "react";
 import { Alert, Button, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { Asset, ImageLibraryOptions, launchImageLibrary } from "react-native-image-picker";
+import { ImageLibraryOptions, launchImageLibrary } from "react-native-image-picker";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AddProductPage() {}
   
-  const [image, setImage] = useState ("");
-  const [imagelist, setImageList] = useState<Asset[] | { id: string; uri: string }[]>([]);
+  const [image, setImage] = useState<string | null>(null);
+  const [imagelist, setImageList] = useState<
+    { id: string; uri: string }[]
+  >([]);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [contact, setContact] = useState("");
