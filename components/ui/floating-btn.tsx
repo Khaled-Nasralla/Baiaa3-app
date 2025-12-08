@@ -1,8 +1,9 @@
+import { router } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-
 export function FloatingButton() {
   return (
-    <TouchableOpacity style={styles.floating}>
+    <TouchableOpacity style={styles.floating} onPress={
+ () =>router.replace("/add-prudoct-page")} >
       <Text style={styles.plus}>+</Text>
     </TouchableOpacity>
   );
