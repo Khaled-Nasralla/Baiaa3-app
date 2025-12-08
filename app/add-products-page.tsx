@@ -1,4 +1,5 @@
 import { ThemedView } from "@/components/themed-view";
+import { Picker } from "@react-native-picker/picker";
 import * as imagePicker from "expo-image-picker";
 import React, { useState } from "react";
 import {
@@ -21,6 +22,7 @@ export default function AddProductPage() {
   const [price, setPrice] = useState("");
   const [contact, setContact] = useState("");
   const [description, setDescription] = useState("");
+  const [selectedValue, setSelectedValue] = useState("");
 
 
 
@@ -112,7 +114,15 @@ export default function AddProductPage() {
           />
        
         </View>
-
+          <Picker
+          selectedValue={selectedValue}
+          onValueChange={(value) => setSelectedValue(value)}
+        >
+          <Picker.Item label="اختيار" value="" />
+          <Picker.Item label="Electronics" value="electronics" />
+          <Picker.Item label="Clothes" value="clothes" />
+          <Picker.Item label="Furniture" value="furniture" />
+        </Picker>
         {/* Contact */}
         <TextInput
           placeholder="رقم التواصل"
