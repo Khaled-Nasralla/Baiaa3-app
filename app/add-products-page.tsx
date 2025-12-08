@@ -38,7 +38,7 @@ export default function AddProductPage() {
       const response = await imagePicker.launchImageLibraryAsync({
       mediaTypes: imagePicker.MediaTypeOptions.Images,
       quality: 1,
-      selectionLimit:100,
+      selectionLimit:10,
       allowsMultipleSelection: true
     });
 
