@@ -8,28 +8,25 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View
 } from "react-native";
-import {
-  ImageLibraryOptions,
-  launchImageLibrary
-} from "react-native-image-picker";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AddProductPage() {
 
 
   const [image, setImage] = useState<string | null>(null);
-  const [imagelist, setImageList] = useState<
-    { id: string; uri: string }[]
-  >([]);
+  const [imagelist, setImageList] = useState<{ id: string; uri: string }[]>([]);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [contact, setContact] = useState("");
   const [description, setDescription] = useState("");
 
 
-  const pickImage = async () => {
+
+  // Multi-image picker (react-native-image-picker)
+  const selectImage = async () => {
     const permission =
       await imagePicker.requestMediaLibraryPermissionsAsync();
     if (!permission.granted) {
@@ -37,35 +34,18 @@ export default function AddProductPage() {
       return;
     }
 
-    const result = await imagePicker.launchImageLibraryAsync({
+    try {
+
+      const response = await imagePicker.launchImageLibraryAsync({
       mediaTypes: imagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      quality: 1
+      quality: 1,
+      selectionLimit:100,
+      allowsMultipleSelection: true
     });
 
-    if (!result.canceled && result.assets?.length > 0) {
-      const selectedUri = result.assets[0].uri;
-      setImage(selectedUri);
-    }
-  };
-
-  // Multi-image picker (react-native-image-picker)
-  const selectImage = async () => {
 
 
-
-    
-    const pickerOption: ImageLibraryOptions = {
-      selectionLimit: 10,
-      mediaType: "photo"
-    };
-
-
-    
-    try {
-      const response = await launchImageLibrary(pickerOption);
-
-      if (response.didCancel) return;
+      if (response.canceled) return;
 
       if (response.assets && response.assets.length > 0) {
         const newImages = response.assets.map((asset) => ({
@@ -73,7 +53,9 @@ export default function AddProductPage() {
           uri: asset.uri ?? ""
         }));
 
-        setImageList((prev) => [...prev, ...newImages]);
+        if (newImages) {
+          setImageList((prev) => [...prev, ...newImages]);
+        }
       }
     } catch (error) {
       console.log("Image Picker Error:", error);
@@ -120,7 +102,7 @@ export default function AddProductPage() {
         />
 
         {/* Single Image Picker */}
-        <Button title="اختيار صورة" onPress={pickImage} />
+        <Button title="اختيار صورة" onPress={selectImage} />
 
         {image && (
           <Image
@@ -158,6 +140,14 @@ export default function AddProductPage() {
           value={description}
           onChangeText={setDescription}
         />
+
+        {/* Multi Image Picker */}
+        <TouchableOpacity
+          onPress={selectImage}
+          style={styles.imagePickerButton}
+        >
+          <Text style={styles.imagePickerButtonText}>اختر عدة صور</Text>
+        </TouchableOpacity>
 
         {imagelist.length > 0 && (
           <View style={styles.imagesPreviewContainer}>
