@@ -100,27 +100,17 @@ export default function AddProductPage() {
           onChangeText={setName}
         />
 
-        {/* Single Image Picker */}
-        <Button title="اختيار صورة" onPress={selectImage} />
-
-        {image && (
-          <Image
-            source={{ uri: image }}
-            style={{ width: 200, height: 200, marginTop: 20 }}
-          />
-        )}
-
         {/* Price */}
         <View style={styles.priceInputContainer}>
-          <Text style={styles.currencySymbolStyle}>ل.س</Text>
-
+             <Text style={styles.currencySymbolStyle}>ل.س</Text>
           <TextInput
-            placeholder="السعر"
+            placeholder="0"
             style={styles.inputStyle}
             value={price}
             onChangeText={setPrice}
             keyboardType="numeric"
           />
+       
         </View>
 
         {/* Contact */}
@@ -140,6 +130,15 @@ export default function AddProductPage() {
           onChangeText={setDescription}
         />
         
+          {/* Single Image Picker */}
+        <Button title="اختيار صورة" onPress={selectImage} />
+
+        {image && (
+          <Image
+            source={{ uri: image }}
+            style={{ width: 200, height: 200, marginTop: 20 }}
+          />
+        )}
 
         {imagelist.length > 0 && (
           <View style={styles.imagesPreviewContainer}>
@@ -162,11 +161,13 @@ export default function AddProductPage() {
 
 const styles = StyleSheet.create({
   inputStyle: {
-    margin: 10,
+    margin: 5,
     padding: 10,
     color: "#1b8bff",
     borderRadius: 10,
-    backgroundColor: "#f0f0f0"
+    backgroundColor: "#f0f0f0",
+    justifyContent:"center",
+    alignContent:"center",
   },
   container: {
     flex: 1,
@@ -175,13 +176,9 @@ const styles = StyleSheet.create({
   },
   priceInputContainer: {
     flexDirection: "row-reverse",
+    justifyContent:"space-between",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    height: 50,
-    marginBottom: 10
+    padding: 10,
   },
   currencySymbolStyle: {
     fontSize: 16,
