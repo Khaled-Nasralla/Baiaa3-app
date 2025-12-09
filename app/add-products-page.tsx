@@ -6,9 +6,11 @@ import {
   Alert,
   Button,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -33,6 +35,7 @@ export default function AddProductPage() {
     if (!permission.granted) {
       Alert.alert("الصور", "لازم تعطي صلاحية للوصول للصور");
       return;
+      
     }
 
     try {
@@ -53,6 +56,7 @@ export default function AddProductPage() {
           id: (asset.uri || "") + Date.now().toString(),
           uri: asset.uri ?? ""
         }));
+
 
         if (newImages) {
           setImageList((prev) => [...prev, ...newImages]);
@@ -91,8 +95,13 @@ export default function AddProductPage() {
     setImageList([]);
   };
 
+
+
   return (
     <SafeAreaView style={styles.container}>
+
+    <ScrollView showsVerticalScrollIndicator={true}>
+
       <ThemedView>
         {/* Name */}
         <TextInput
@@ -162,35 +171,74 @@ export default function AddProductPage() {
         />
         
           {/* Single Image Picker */}
-        <Button title="اختيار صورة" onPress={selectImage} />
+        <View style={styles.imageBox}>
+  <TouchableOpacity onPress={selectImage} activeOpacity={0.9}>
+    <Image
+      source={require('../assets/images/choce.png')} 
+      style={styles.uploadIcon}
+    />
+    
+  </TouchableOpacity>
+</View>
 
-        {image && (
-          <Image
-            source={{ uri: image }}
-            style={{ width: 200, height: 200, marginTop: 20 }}
-          />
-        )}
 
         {imagelist.length > 0 && (
-          <View style={styles.imagesPreviewContainer}>
-            {imagelist.map((img) => (
-              <Image
-                key={img.id}
-                source={{ uri: img.uri }}
-                style={styles.previewImage}
-              />
-            ))}
-          </View>
-        )}
-
+  <View style={styles.imagesPreviewContainer}>
+    {imagelist.map((img) => (
+      <View key={img.id} style={styles.imageWrapper}>
+        <Image
+          source={{ uri: img.uri }}
+          style={styles.previewImage}
+        />
+        {/* زر الإغلاق × */}
+        <TouchableOpacity
+          style={styles.closeButton}
+          onPress={() => {
+            setImageList((prev) =>
+              prev.filter((i) => i.id !== img.id)
+            );
+          }}
+        >
+          <Text style={styles.closeButtonText}>×</Text>
+        </TouchableOpacity>
+      </View>
+    ))}
+  </View>
+)}
         {/* Add Button */}
         <Button title="إضافة المنتج" onPress={handleAddProduct} />
       </ThemedView>
+</ScrollView>
     </SafeAreaView>
+    
+    
   );
 }
 
 const styles = StyleSheet.create({
+
+imageBox: {
+  width: '100%',
+  height: 140,
+  backgroundColor: '#f1f1f1',
+  borderRadius: 12,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginBottom: 15,
+},
+
+uploadIcon: {
+  width: 60,
+  height: 60,
+  resizeMode: 'contain',
+  marginBottom: 6,
+},
+
+uploadText: {
+  fontSize: 14,
+  color: '#555',
+},
+
   inputStyle: {
     margin: 5,
     padding: 10,
@@ -239,5 +287,25 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 5,
     margin: 5
-  }
+  },
+  imageWrapper: { 
+  position: 'relative',
+  margin: 5,
+},
+closeButton: {       // زر ×
+  position: 'absolute',
+  top: -5,
+  right: -5,
+  backgroundColor: 'red',
+  borderRadius: 12,
+  width: 24,
+  height: 24,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+closeButtonText: {   // نص × داخل الزر
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: 16,
+},
 });
