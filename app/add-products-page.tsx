@@ -24,7 +24,7 @@ export default function AddProductPage() {
   const [description, setDescription] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedCityValue, setSelectedCityValue ] = useState ("");
-
+  const [addressdescription, setaddressdescription] = useState("");
 
   // Multi-image picker (react-native-image-picker)
   const selectImage = async () => {
@@ -119,11 +119,13 @@ export default function AddProductPage() {
           onValueChange={(value) => setSelectedValue(value)}
         >
           <Picker.Item label="اختر الفئة" value="" />
-          <Picker.Item label="Electronics" value="electronics" />
-          <Picker.Item label="Clothes" value="clothes" />
-          <Picker.Item label="Furniture" value="furniture" />
+          <Picker.Item label="سيارات و دراجات" value="سيارات و دراجات" />
+          <Picker.Item label="الالبسة و الموضة" value="الالبسة و الموضة" />
+          <Picker.Item label="هواتف و اجهزة محمولة" value="هواتف و اجهزة محمولة" />
+          <Picker.Item label="معدات" value="معدات" />
+          <Picker.Item label="التجميل و العناية" value="التجميل و العناية" />
         </Picker>
-        {/* Contact */}
+        
 
 <Picker
           selectedValue={selectedCityValue}
@@ -133,8 +135,16 @@ export default function AddProductPage() {
           <Picker.Item label="دمشق" value="دمشق" />
           <Picker.Item label="ريف دمشق" value="دمشق" />
         </Picker>
-        {/* Contact */}
+       
+        {/*AddressDescription */}
+        <TextInput
+        placeholder="المنطقة و وصف العنوان"
+        style={styles.inputStyle}
+        value={addressdescription}
+        onChangeText={setaddressdescription}
+        />
 
+        {/* Contact */}
         <TextInput
           placeholder="رقم التواصل"
           style={styles.inputStyle}
