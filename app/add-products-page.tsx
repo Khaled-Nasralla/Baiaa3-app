@@ -23,7 +23,7 @@ export default function AddProductPage() {
   const [contact, setContact] = useState("");
   const [description, setDescription] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
-
+  const [selectedCityValue, setSelectedCityValue ] = useState ("");
 
 
   // Multi-image picker (react-native-image-picker)
@@ -126,8 +126,8 @@ export default function AddProductPage() {
         {/* Contact */}
 
 <Picker
-          selectedValue={selectedValue}
-          onValueChange={(value) => setSelectedValue(value)}
+          selectedValue={selectedCityValue}
+          onValueChange={(value) => setSelectedCityValue(value)}
         >
           <Picker.Item label="المدينة" value="" />
           <Picker.Item label="دمشق" value="دمشق" />
