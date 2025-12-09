@@ -5,7 +5,9 @@ import { Template } from '@/components/ui/template';
 import { images } from '@/constants/images';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { useRouter } from 'expo-router';
+import productDetails from '../productDetails';
+import ProductDetails from '../productDetails';
 export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
@@ -43,7 +45,12 @@ export default function HomeScreen() {
     </SafeAreaView>
   );
 }
+const router = useRouter();
 
+const handleSectionPress = (sectionId: string) => {
+    router.push(productDetails?id=${sectionId});
+  
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
