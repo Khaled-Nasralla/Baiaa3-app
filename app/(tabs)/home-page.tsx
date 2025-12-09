@@ -3,12 +3,15 @@ import { Serach } from '@/components/ui/search';
 import { SectionsBar } from '@/components/ui/sections-bar';
 import { Template } from '@/components/ui/template';
 import { images } from '@/constants/images';
+import { router } from 'expo-router';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from 'expo-router';
-import productDetails from '../productDetails';
-import ProductDetails from '../productDetails';
+
 export default function HomeScreen() {
+
+const onPress =  () => {
+ router.replace("/productDetails")
+}
   return (
     <SafeAreaView style={styles.container}>
        <Serach />
@@ -23,20 +26,21 @@ export default function HomeScreen() {
   <SectionsBar image={images.makeUp}/>
   <SectionsBar image={images.resturants}/>
 
+
 </ScrollView>
 
 
       <ScrollView showsVerticalScrollIndicator={true}>
        
         <View style={styles.grid}>
-          <Template />
-          <Template />
-          <Template />
-          <Template />
-          <Template />
-          <Template />
-          <Template />
-          <Template />
+          <Template onPress ={onPress} />
+          <Template onPress ={onPress} />
+          <Template onPress ={onPress} />
+          <Template onPress ={onPress} />
+          <Template onPress ={onPress} />
+          <Template onPress ={onPress} />
+          <Template onPress ={onPress} />
+          <Template onPress ={onPress} />
         </View>
       </ScrollView>
 
@@ -45,12 +49,7 @@ export default function HomeScreen() {
     </SafeAreaView>
   );
 }
-const router = useRouter();
 
-const handleSectionPress = (sectionId: string) => {
-    router.push(productDetails?id=${sectionId});
-  
-};
 const styles = StyleSheet.create({
   container: {
     flex: 1,

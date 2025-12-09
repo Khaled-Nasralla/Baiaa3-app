@@ -1,11 +1,15 @@
-import { Image, StyleSheet } from "react-native";
+import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { ThemedText } from "../themed-text";
 import { ThemedView } from "../themed-view";
 
-export function Template() {
+type TemplateProps = {
+  onPress: () => void; 
+};
+export function Template({ onPress }: TemplateProps) {
   return (
     <ThemedView style={styles.card}>
-      <Image
+      <TouchableOpacity onPress={onPress}>
+  <Image
         source={require("../../assets/images/khaled.png")}
         style={styles.image}
       />
@@ -13,6 +17,8 @@ export function Template() {
       <ThemedText style={styles.text}>المنتج :</ThemedText>
       <ThemedText style={styles.text}>السعر  :</ThemedText>
       <ThemedText style={styles.text}>المكان :</ThemedText>
+      </TouchableOpacity>
+    
     </ThemedView>
   );
 }

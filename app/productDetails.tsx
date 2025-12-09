@@ -1,26 +1,11 @@
 import React from "react";
-import { Dimensions, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
-const { width } = Dimensions.get("window");
 
-// نوع بيانات المنتج
-type Product = {
-  name: string;
-  price: number;
-  location: string;
-  description: string;
-  ownerName: string;
-  images: { uri: string }[];
-};
 
-// نوع Props للصفحة
-type ProductDetailsProps = {
-  route: { params: { product: Product } };
-  navigation: any;
-};
 
-export default function ProductDetails({ route }: ProductDetailsProps) {
-  const { product } = route.params;
+
+export default function ProductDetails() {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -35,13 +20,13 @@ export default function ProductDetails({ route }: ProductDetailsProps) {
 
       {/ معلومات المنتج */}
       <View style={{ padding: 15 }}>
-        <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 5 }}>{product.name}</Text>
-        <Text style={{ fontSize: 20, color: "#1b8bff", marginBottom: 5 }}>${product.price}</Text>
-        <Text style={{ fontSize: 16, color: "#555", marginBottom: 10 }}>{product.location}</Text>
-        <Text style={{ fontSize: 16, color: "#333", lineHeight: 22 }}>{product.description}</Text>
+        <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 5 }}>{}</Text>
+        <Text style={{ fontSize: 20, color: "#1b8bff", marginBottom: 5 }}>${}</Text>
+        <Text style={{ fontSize: 16, color: "#555", marginBottom: 10 }}>{}</Text>
+        <Text style={{ fontSize: 16, color: "#333", lineHeight: 22 }}>{}</Text>
 
         <View style={{ marginTop: 15 }}>
-          <Text style={{ fontSize: 14, color: "#888" }}>نشر بواسطة: {product.ownerName}</Text>
+          <Text style={{ fontSize: 14, color: "#888" }}>نشر بواسطة: {}</Text>
         </View>
       </View>
     </ScrollView>
