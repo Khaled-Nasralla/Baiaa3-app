@@ -118,12 +118,23 @@ export default function AddProductPage() {
           selectedValue={selectedValue}
           onValueChange={(value) => setSelectedValue(value)}
         >
-          <Picker.Item label="اختيار" value="" />
+          <Picker.Item label="اختر الفئة" value="" />
           <Picker.Item label="Electronics" value="electronics" />
           <Picker.Item label="Clothes" value="clothes" />
           <Picker.Item label="Furniture" value="furniture" />
         </Picker>
         {/* Contact */}
+
+<Picker
+          selectedValue={selectedValue}
+          onValueChange={(value) => setSelectedValue(value)}
+        >
+          <Picker.Item label="المدينة" value="" />
+          <Picker.Item label="دمشق" value="دمشق" />
+          <Picker.Item label="ريف دمشق" value="دمشق" />
+        </Picker>
+        {/* Contact */}
+
         <TextInput
           placeholder="رقم التواصل"
           style={styles.inputStyle}
