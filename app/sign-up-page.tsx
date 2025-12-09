@@ -1,8 +1,37 @@
+import { signUp } from "@/api/apiUser";
 import { ThemedView } from "@/components/themed-view";
-import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { router } from "expo-router";
+import { useState } from "react";
+import { Alert, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignUpPage() {
+const [name,setName]=useState("");
+const [surname,setSurname]=useState("");
+const [password,setPassword]=useState("");
+const [emailAddress,setEmailAddress]=useState("");
+const [confirmPassword,setConfirmPassword]= useState("")
+ const handleSignUp = async () => {
+  if(confirmPassword != password){
+    Alert.alert("passwod does not match")
+    return;
+  }
+    try {
+      const response = await signUp({ 
+        name : name, 
+        surName :surname, 
+        emailAddress : emailAddress, 
+        password:password 
+      });
+      if(response){
+        router.replace("/sign-in-page")
+      }
+
+      Alert.alert("Success", "Account created successfully!");
+    } catch (err) {
+      Alert.alert("Error", "Signup failed");
+    }
+  };
   return (
        <ImageBackground
          style={styles.bg}
@@ -10,14 +39,14 @@ export default function SignUpPage() {
         >
     <SafeAreaView style={styles.safeArea}>
       <ThemedView style={styles.container}>
-        <TextInput style={styles.inputStyles} placeholder="الاسم" />
-        <TextInput style={styles.inputStyles} placeholder="الكنية" />
-        <TextInput style={styles.inputStyles} placeholder="الأيميل"/>
-        <TextInput style={styles.inputStyles} placeholder="كلمة المرور" secureTextEntry />
-        <TextInput style={styles.inputStyles} placeholder="تأكيد كلمة المرور" secureTextEntry />
+        <TextInput style={styles.inputStyles} placeholder="الاسم" onChangeText={setName} value={name}  />
+        <TextInput style={styles.inputStyles} placeholder="الكنية" onChangeText={setSurname} value={surname} />
+        <TextInput style={styles.inputStyles} placeholder="الأيميل" onChangeText={setEmailAddress} value={emailAddress}/>
+        <TextInput style={styles.inputStyles} placeholder="كلمة المرور" secureTextEntry onChangeText={setPassword} value={password} />
+        <TextInput style={styles.inputStyles} placeholder="تأكيد كلمة المرور" secureTextEntry onChangeText={setConfirmPassword} value={confirmPassword} />
 
         <ThemedView style={styles.btnContainer}>
-          <TouchableOpacity style={styles.btnStyle}>
+          <TouchableOpacity style={styles.btnStyle} onPress={handleSignUp}>
             <Text style={styles.textBtn}>تسجيل إشتراك</Text>
           </TouchableOpacity>
         </ThemedView>

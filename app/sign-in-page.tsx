@@ -1,17 +1,33 @@
+import { signIn } from "@/api/apiUser";
 import { images } from "@/constants/images";
 import { router } from "expo-router";
+import { useState } from "react";
 import {
-    Image,
-    ImageBackground,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignInPage() {
+  const [emailAddress,setEmailAddress]=useState("");
+    const [password,setPassword]=useState("");
+
+   
+const handleSignInPress = async () => {
+  try {
+    const response = await signIn({ emailAddress, password });
+    console.log("Token:", response.data.token);
+    router.replace("/home-page");
+  } catch (error: any) {
+    alert("Login failed: " + error.response?.data || error.message);
+  }
+};
+
   return (
 
      <ImageBackground
@@ -28,16 +44,20 @@ export default function SignInPage() {
           style={styles.input}
           placeholder="البريد الإلكتروني"
           placeholderTextColor="#999"
+          value={emailAddress}
+          onChangeText={setEmailAddress}
         />
         <TextInput
           style={styles.input}
           placeholder="كلمة السر"
           placeholderTextColor="#999"
+          value={password}
+          onChangeText={setPassword}
           secureTextEntry
         />
 
         {/* Login Button */}
-        <TouchableOpacity style={styles.primaryBtn}>
+        <TouchableOpacity style={styles.primaryBtn} onPress={handleSignInPress}>
           <Text style={styles.primaryText}>تسجيل الدخول</Text>
         </TouchableOpacity>
 
