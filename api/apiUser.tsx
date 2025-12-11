@@ -10,15 +10,9 @@ export async function signUp({ name, surName, emailAddress, password }: User) {
   });
 }
 
-type SignInDto = {
-  emailAddress: string;
-  password: string;
-};
-
-// Correct function signature
-export async function signIn({ emailAddress, password }: SignInDto) {
+export async function signInApi( emailAddress:string | null, password : string|null) {
   return api.post("/users/signin", {
-    emailAddress: emailAddress, // matches backend SignInDto
+    emailAddress: emailAddress,
     password: password,
   });
 }

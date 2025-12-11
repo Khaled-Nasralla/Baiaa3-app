@@ -1,5 +1,5 @@
-import { signIn } from "@/api/apiUser";
 import { images } from "@/constants/images";
+import { useSignInContext } from "@/contexts/signInContext/sign-in-context-provider";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
@@ -14,15 +14,16 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignInPage() {
-  const [emailAddress,setEmailAddress]=useState("");
-    const [password,setPassword]=useState("");
+  const [emailAddress,setEmailAddress] = useState("");
+  const [password,setPassword] = useState("");
+  const {loading, error,signIn} = useSignInContext()
 
    
 const handleSignInPress = async () => {
   try {
-    const response = await signIn({ emailAddress, password });
-    console.log("Token:", response.data.token);
-    router.replace("/home-page");
+    await signIn(emailAddress, password);
+    router.push("/(tabs)/home-page");
+
   } catch (error: any) {
     alert("Login failed: " + error.response?.data || error.message);
   }

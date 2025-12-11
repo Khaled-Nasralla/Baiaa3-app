@@ -5,6 +5,7 @@ import { ThemedView } from "../themed-view";
 type TemplateProps = {
   onPress: () => void; 
 };
+
 export function Template({ onPress }: TemplateProps) {
   return (
     <ThemedView style={styles.card}>

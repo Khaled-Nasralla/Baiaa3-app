@@ -1,17 +1,18 @@
 import { Template } from "@/components/ui/template";
+import { useSignInContext } from "@/contexts/signInContext/sign-in-context-provider";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
-    Image,
-    Platform,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Image,
+  Platform,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -28,6 +29,9 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
     email: "example@email.com",
     phone: "00963123456789",
   });
+  const {user} = useSignInContext();
+    
+
 
   const [myProducts, setMyProducts] = useState([
     { id: "1", title: "منتج 1" },
@@ -77,7 +81,7 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
             {isOwner ? (
               <TextInput
                 style={styles.nameInput}
-                value={name}
+                value={`${user?.name ?? ""} ${user?.surName ?? ""}`}
                 onChangeText={setName}
               />
             ) : (
@@ -95,7 +99,7 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
             <>
               <TextInput
                 style={styles.contactInput}
-                value={contactInfo.email}
+                value={user?.emailAddress}
                 onChangeText={(text) =>
                   setContactInfo({ ...contactInfo, email: text })
                 }
