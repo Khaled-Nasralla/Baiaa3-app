@@ -25,8 +25,12 @@ export function SignInContextProvider({ children }: { children: ReactNode }) {
             setLoading(false);
         }
     }
+
+    const signOut = () => {
+        setUser(undefined);
+    }
     return (
-        <signInContext.Provider value={{ user, loading, error, signIn }}  >
+        <signInContext.Provider value={{ user, loading, error, signIn,signOut }}  >
             {children}
         </signInContext.Provider>
     )

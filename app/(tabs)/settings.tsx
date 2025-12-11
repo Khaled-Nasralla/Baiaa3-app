@@ -1,4 +1,5 @@
 import { images } from "@/constants/images";
+import { useSignInContext } from "@/contexts/signInContext/sign-in-context-provider";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -24,6 +25,7 @@ export default function SettingsScreen() {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const {signOut} = useSignInContext()
 
   const currentPassword = "123456"; // كلمة السر الحالية تجريبية
 
@@ -48,6 +50,13 @@ export default function SettingsScreen() {
         return "person-outline";
     }
   };
+
+   const handleSignOut = () => {
+   
+     signOut()
+     router.push("/sign-in-page");
+  
+   }
 
   return (
     <ScrollView style={styles.container}>
@@ -103,7 +112,7 @@ export default function SettingsScreen() {
       </View>
 
       {/* ------- تسجيل الخروج ------- */}
-      <TouchableOpacity style={styles.logoutBtn}>
+      <TouchableOpacity style={styles.logoutBtn} onPress={handleSignOut}>
         <Ionicons name="log-out-outline" size={22} color="red" />
         <Text style={styles.logoutText}>تسجيل الخروج</Text>
       </TouchableOpacity>

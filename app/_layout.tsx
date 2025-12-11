@@ -11,8 +11,13 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <SignInContextProvider>
-              <Stack>
- 
+      <Stack screenOptions={{
+        headerShown:false,
+        animation:"fade"
+       }}
+
+      >
+
       </Stack>
       </SignInContextProvider>
 
