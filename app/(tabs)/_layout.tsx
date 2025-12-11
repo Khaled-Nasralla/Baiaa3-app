@@ -32,7 +32,7 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="myfavorites"
+        name="my-favorites"
         options={{
           title: "المفضلة",
         tabBarIcon: ({ color }) => <Ionicons size={28} name="heart" color={color} />
@@ -56,7 +56,7 @@ export default function TabLayout() {
       />
 
 <Tabs.Screen
-        name="myprofile"
+        name="my-profile"
         options={{
           title: "حسابي",
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.fill.badge.minus" color={color} />,

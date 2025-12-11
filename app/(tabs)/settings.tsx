@@ -1,5 +1,5 @@
 import { images } from "@/constants/images";
-import { useSignInContext } from "@/contexts/signInContext/sign-in-context-provider";
+import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
 import React, { useState } from "react";

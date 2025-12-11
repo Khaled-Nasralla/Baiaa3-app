@@ -1,6 +1,5 @@
-import { signUp } from "@/api/apiUser";
 import { ThemedView } from "@/components/themed-view";
-import { router } from "expo-router";
+import { useSignUPContext } from "@/contexts/sign-up-context/sign-up-context-provider";
 import { useState } from "react";
 import { Alert, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,27 +10,15 @@ const [surname,setSurname]=useState("");
 const [password,setPassword]=useState("");
 const [emailAddress,setEmailAddress]=useState("");
 const [confirmPassword,setConfirmPassword]= useState("")
+const {signUp,error,loading}=useSignUPContext();
  const handleSignUp = async () => {
   if(confirmPassword != password){
     Alert.alert("passwod does not match")
     return;
   }
-    try {
-      const response = await signUp({ 
-        name : name, 
-        surName :surname, 
-        emailAddress : emailAddress, 
-        password:password 
-      });
-      if(response){
-        router.replace("/sign-in-page")
-      }
-
-      Alert.alert(response.data.response);
-    } catch (err:any) {
-    Alert.alert(err.response?.data?.message || err.message);
-
-    }
+     await signUp({ name : name, surName :surname, emailAddress : emailAddress,  password:password })
+     
+      alert(error);
   };
   return (
        <ImageBackground

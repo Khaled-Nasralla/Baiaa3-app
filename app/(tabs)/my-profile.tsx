@@ -1,5 +1,5 @@
 import { Template } from "@/components/ui/template";
-import { useSignInContext } from "@/contexts/signInContext/sign-in-context-provider";
+import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -130,7 +130,7 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
             {myProducts.map((item) => (
               <Template
                 key={item.id}
-                onPress={() => router.push("/productDetails")}
+                onPress={() => router.push("/product-details")}
               />
             ))}
           </View>

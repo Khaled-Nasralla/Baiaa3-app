@@ -10,7 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function HomeScreen() {
 
 const onPress =  () => {
- router.push("/productDetails")
+ router.push("/product-details")
 }
   return (
     <SafeAreaView style={styles.container}>
