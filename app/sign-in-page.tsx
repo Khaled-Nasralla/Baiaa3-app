@@ -9,90 +9,85 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignInPage() {
-  const [emailAddress,setEmailAddress] = useState("");
-  const [password,setPassword] = useState("");
-  const {loading, error,signIn} = useSignInContext()
+  const [emailAddress, setEmailAddress] = useState("");
+  const [password, setPassword] = useState("");
+  const { loading, error, signIn } = useSignInContext()
 
-   
-const handleSignInPress = async () => {
-  try {
+
+  const handleSignInPress = async () => {
+    if (password == "") {
+      alert("الرجاء ادخال كلمةالسر ")
+    } else if (emailAddress == "") {
+      alert("الرجاء ادخال البريد الإلكتروني ")
+    } else if (emailAddress == "" && password == "") {
+      alert("الرجاء ادخال كلمةالسر و البريد الإلكتروني ")
+    }
     await signIn(emailAddress, password);
-    router.push("/(tabs)/home-page");
+    router.replace("/(tabs)/home-page");
 
-  } catch (error: any) {
-    alert("Login failed: " + error.response?.data || error.message);
-  }
-};
+    alert(error + "فشل تسجل الدخول: ");
+  };
 
   return (
 
-     <ImageBackground
-     style={styles.bg}
-      source={require("../assets/images/backgroundphoto.jpg")}
-    >
-    <SafeAreaView style={styles.container}>
-      <View style={styles.card}>
-        {/* Logo */}
-        <Image source={images.logo} style={styles.logo} />
+    <ImageBackground
+      style={styles.bg}
+      source={require("../assets/images/backgroundphoto.jpg")}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.card}>
+          {/* Logo */}
+          <Image source={images.logo} style={styles.logo} />
 
-        {/* Inputs */}
-        <TextInput
-          style={styles.input}
-          placeholder="البريد الإلكتروني"
-          placeholderTextColor="#999"
-          value={emailAddress}
-          onChangeText={setEmailAddress}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="كلمة السر"
-          placeholderTextColor="#999"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
+          {/* Inputs */}
+          <TextInput
+            style={styles.input} placeholder="البريد الإلكتروني" placeholderTextColor="#999"
+            value={emailAddress} onChangeText={setEmailAddress}
+          />
+          <TextInput style={styles.input} placeholder="كلمة السر" placeholderTextColor="#999"
+           value={password} onChangeText={setPassword} secureTextEntry
+          />
 
-        {/* Login Button */}
-        <TouchableOpacity style={styles.primaryBtn} onPress={handleSignInPress}>
-          <Text style={styles.primaryText}>تسجيل الدخول</Text>
-        </TouchableOpacity>
-
-        {/* Dividing Line */}
-        <View style={styles.dividerContainer}>
-          <View style={styles.divider} />
-          <Text style={styles.dividerText}>أو</Text>
-          <View style={styles.divider} />
-        </View>
-
-        {/* Secondary Buttons */}
-        <View style={styles.buttonsRow}>
-          <TouchableOpacity
-            style={styles.secondaryBtn}
-            onPress={() => router.replace("/home-page")}
-          >
-            <Text style={styles.secondaryText}>تخطي</Text>
+          {/* Login Button */}
+          <TouchableOpacity style={styles.primaryBtn} onPress={handleSignInPress}>
+            <Text style={styles.primaryText}>تسجيل الدخول</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.secondaryBtn}
-            onPress={() => router.replace("/sign-up-page")}
-          >
-            <Text style={styles.secondaryText}>إنشاء حساب</Text>
-          </TouchableOpacity>
+          {/* Dividing Line */}
+          <View style={styles.dividerContainer}>
+            <View style={styles.divider} />
+            <Text style={styles.dividerText}>أو</Text>
+            <View style={styles.divider} />
+          </View>
+
+          {/* Secondary Buttons */}
+          <View style={styles.buttonsRow}>
+            <TouchableOpacity
+              style={styles.secondaryBtn}
+              onPress={() => router.replace("/home-page")}
+            >
+              <Text style={styles.secondaryText}>تخطي</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.secondaryBtn}
+              onPress={() => router.replace("/sign-up-page")}
+            >
+              <Text style={styles.secondaryText}>إنشاء حساب</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
     </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-      bg: {
+  bg: {
     flex: 1,
   },
   container: {

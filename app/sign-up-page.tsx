@@ -27,9 +27,10 @@ const [confirmPassword,setConfirmPassword]= useState("")
         router.replace("/sign-in-page")
       }
 
-      Alert.alert("Success", "Account created successfully!");
-    } catch (err) {
-      Alert.alert("Error", "Signup failed");
+      Alert.alert(response.data.response);
+    } catch (err:any) {
+    Alert.alert(err.response?.data?.message || err.message);
+
     }
   };
   return (
