@@ -1,9 +1,16 @@
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from "react-native";
 
-export function SectionsBar({ image }: { image: any }) {
-  return    <TouchableOpacity onPress={ () =>console.log("hell yeah")}>
+type Props = {
+  image: any;
+  onPress: () => void;
+};
+
+export function SectionsBar({ image, onPress }: Props) {
+  return (
+    <TouchableOpacity onPress={onPress}>
       <Image source={image} style={styles.image} />
-    </TouchableOpacity>;
+    </TouchableOpacity>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -11,7 +18,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginRight: 5,
-    marginBottom:30,
+    marginBottom: 30,
     borderRadius: 10,
   },
 });
