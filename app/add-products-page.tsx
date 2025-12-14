@@ -1,4 +1,6 @@
 import { ThemedView } from "@/components/themed-view";
+import { Product } from "@/entities/prodcut";
+import { useFetchCategories } from "@/hooks/fetch-catgories";
 import { Picker } from "@react-native-picker/picker";
 import * as imagePicker from "expo-image-picker";
 import React, { useState } from "react";
@@ -24,9 +26,11 @@ export default function AddProductPage() {
   const [price, setPrice] = useState("");
   const [contact, setContact] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedValue, setSelectedValue] = useState("");
+  const [categoryValue, setSelectedValue] = useState("");
   const [selectedCityValue, setSelectedCityValue ] = useState ("");
   const [addressdescription, setaddressdescription] = useState("");
+  const [prodcut, setProdcut]=useState<Product>();
+  const {categories,error,loading} = useFetchCategories();
 
   // Multi-image picker (react-native-image-picker)
   const selectImage = async () => {
@@ -74,15 +78,17 @@ export default function AddProductPage() {
       return;
     }
 
-    const productData = {
-      name,
-      price,
-      contact,
-      description,
-      image,
-      imagelist
+    const productData : Product = {
+      prodcutName : name,
+      price : price,
+      contact : contact,
+      description : description,
+      imagelist : imagelist,
+      createdAt : Date.now.toString(),
+      catgoryId : 
     };
 
+    setProdcut(productData);
     console.log("Product Data:", productData);
     Alert.alert("تم", "تمت إضافة المنتج بنجاح");
 
@@ -124,11 +130,12 @@ export default function AddProductPage() {
        
         </View>
           <Picker
-          selectedValue={selectedValue}
+          selectedValue={categoryValue}
           onValueChange={(value) => setSelectedValue(value)}
         >
           <Picker.Item label="اختر الفئة" value="" />
-          <Picker.Item label="سيارات و دراجات" value="سيارات و دراجات" />
+          <Picker.Item 
+         
           <Picker.Item label="الالبسة و الموضة" value="الالبسة و الموضة" />
           <Picker.Item label="هواتف و اجهزة محمولة" value="هواتف و اجهزة محمولة" />
           <Picker.Item label="معدات" value="معدات" />

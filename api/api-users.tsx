@@ -1,4 +1,4 @@
-import { User } from "@/Entities/user";
+import { User } from "@/entities/user";
 import { api } from "./api";
 
 export async function signUpApi({ name, surName, emailAddress, password }: User) {

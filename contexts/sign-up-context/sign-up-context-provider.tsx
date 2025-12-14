@@ -1,5 +1,5 @@
-import { signUpApi } from "@/api/apiUser";
-import { User } from "@/Entities/user";
+import { signUpApi } from "@/api/api-users";
+import { User } from "@/entities/user";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { SignUpContextType } from "./sign-up-context-type";
 
