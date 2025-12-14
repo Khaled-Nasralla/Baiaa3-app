@@ -1,17 +1,18 @@
+import { AddProductDto } from "@/dtos/AddProdcutDto";
 import { Category } from "@/entities/category";
 import { Product } from "@/entities/prodcut";
 import { Province } from "@/entities/province";
 import { api } from "./api";
 
 
-export function AddProduct({product}:{product:Product}){
-    return api.post("/product/add", {
+export async function AddProduct({product}:{product:AddProductDto}){
+    return await api.post("/prodcut/add", {
      product
     });
 }
 
 export async function GetProducts():Promise<Product[]>{
-    const response = await api.get("prodcuts")
+    const response = await api.get("/prodcuts")
     return response.data.data;
 }
 

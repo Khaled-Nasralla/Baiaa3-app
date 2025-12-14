@@ -1,7 +1,7 @@
 import { AddProduct } from "@/api/api-prodcuts";
 import { ThemedView } from "@/components/themed-view";
 import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
-import { Product } from "@/entities/prodcut";
+import { AddProductDto } from "@/dtos/AddProdcutDto";
 import { useFetchCategories } from "@/hooks/fetch-categories";
 import { useFetchProvinces } from "@/hooks/fetch-provinces";
 import { Picker } from "@react-native-picker/picker";
@@ -30,7 +30,7 @@ export default function AddProductPage() {
   const [categoryValue, setSelectedValue] = useState("");
   const [selectedCityValue, setSelectedCityValue ] = useState ("");
   const [addressdescription, setaddressdescription] = useState("");
-  const [imagelist, setImageList] = useState<{ id: string; uri: string }[]>([]);
+  const [imagelist, setImageList] = useState<{id:string,uri:string}[]>([]);
   const {categories} = useFetchCategories();
   const {provinces}=useFetchProvinces();
   const {user} = useSignInContext();
@@ -80,16 +80,17 @@ export default function AddProductPage() {
       Alert.alert("خطأ", "يرجى تعبئة جميع الحقول المطلوبة");
       return;
     }
-    const productData : Product = { prodcutName : name, price : price, contact : contact, description : description,
-      imagelist : imagelist, createdAt : Date.now.toString(),
-      catgoryId : categoryValue, userId : user?.id, productId : "", province_Id : "", addressDescription : addressdescription
-    }; 
+    const productData : AddProductDto = { prodcutName : name, price : price.toString(), contact : contact.toString(), description : description,
+      imagesList : imagelist, categoryId : categoryValue, userId : user?.id, provinceId :selectedCityValue,
+      addressDescription : addressdescription
+    };
+    console.log(productData);
 
 try {
-  const reponse = await AddProduct({product:productData});
+  await AddProduct({product:productData});
 
 }catch (err : any){
-  console.log("error baby")
+  console.log(err.message);
 }finally{
     // Reset
     setName("");
