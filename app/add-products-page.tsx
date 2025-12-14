@@ -139,6 +139,7 @@ export default function AddProductPage() {
           <Picker.Item label="أجهزة كهربائية" value="أجهزة كهربائية" />
           <Picker.Item label="أدوات منزلية" value="أدوات منزلية" />
         </Picker>
+
         
 
 <Picker
