@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { styles } from "./(styles)/terms-styles";
+import styles from "./(styles)/terms-styles";
 export default function TermsScreen() {
   const router = useRouter();
 

@@ -3,7 +3,8 @@ import { useSignUPContext } from "@/contexts/sign-up-context/sign-up-context-pro
 import { useState } from "react";
 import { Alert, ImageBackground, Text, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styles } from "./(styles)/sign-up-styles";
+import styles from "./(styles)/sign-up-styles";
+
 export default function SignUpPage() {
 const [name,setName]=useState("");
 const [surname,setSurname]=useState("");
@@ -16,7 +17,7 @@ const {signUp,error,loading}=useSignUPContext();
     Alert.alert("passwod does not match")
     return;
   }
-     await signUp({ name : name, surName :surname, emailAddress : emailAddress,  password:password })
+     await signUp({ id:"",name : name, surName :surname, emailAddress : emailAddress,  password:password })
      
       alert(error);
   };

@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from "react-native";
 const { width: screenWidth } = Dimensions.get('window');
 
-export const styles = StyleSheet.create({
+ const styles = StyleSheet.create({
   container: {
     padding: 15,
     paddingBottom: 40, // مساحة أسفل الشاشة لتجنب شريط الهاتف
@@ -47,3 +47,5 @@ export const styles = StyleSheet.create({
     writingDirection: "rtl",
   },
 });
+
+export default styles;

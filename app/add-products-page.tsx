@@ -2,7 +2,8 @@ import { AddProduct } from "@/api/api-prodcuts";
 import { ThemedView } from "@/components/themed-view";
 import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
 import { Product } from "@/entities/prodcut";
-import { useFetchCategories } from "@/hooks/fetch-catgories";
+import { useFetchCategories } from "@/hooks/fetch-categories";
+import { useFetchProvinces } from "@/hooks/fetch-provinces";
 import { Picker } from "@react-native-picker/picker";
 import * as imagePicker from "expo-image-picker";
 import React, { useState } from "react";
@@ -17,7 +18,7 @@ import {
   View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styles } from "./(styles)/add-product-page-styles";
+import styles from "./(styles)/add-product-page-styles";
 
 
 export default function AddProductPage() {
@@ -30,7 +31,8 @@ export default function AddProductPage() {
   const [selectedCityValue, setSelectedCityValue ] = useState ("");
   const [addressdescription, setaddressdescription] = useState("");
   const [imagelist, setImageList] = useState<{ id: string; uri: string }[]>([]);
-  const {categories,error,loading} = useFetchCategories();
+  const {categories} = useFetchCategories();
+  const {provinces}=useFetchProvinces();
   const {user} = useSignInContext();
 
   // Multi-image picker (react-native-image-picker)
@@ -130,9 +132,9 @@ try {
           selectedValue={categoryValue}
           onValueChange={(value) => setSelectedValue(value)}>
           <Picker.Item label="اختر الفئة" value="" />
-          {categories.map(category=> (
-            <Picker.Item key={category.categoryId} label={category.categoryName} value={category.categoryId}/>
-          ))}
+          {categories.map(cat => (
+    <Picker.Item key={cat.id} label={cat.categoryName} value={cat.id} />
+  ))}
         </Picker>
         
 
@@ -141,8 +143,11 @@ try {
           onValueChange={(value) => setSelectedCityValue(value)}
         >
           <Picker.Item label="المدينة" value="" />
-          <Picker.Item label="دمشق" value="دمشق" />
-          <Picker.Item label="ريف دمشق" value="دمشق" />
+          {provinces.map(prov => (
+                <Picker.Item key={prov.id} label={prov.provinceName} value={prov.id} />
+          )
+
+          )}
         </Picker>
        
         {/*AddressDescription */}

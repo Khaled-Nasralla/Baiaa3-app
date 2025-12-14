@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-export const styles = StyleSheet.create({
+ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: "#fff",
@@ -71,3 +71,4 @@ export const styles = StyleSheet.create({
     writingDirection: "rtl",
   },
 });
+export default styles;
