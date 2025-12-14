@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from "react-native";
 const { width: screenWidth } = Dimensions.get('window');
 
- const styles = StyleSheet.create({
+ const myFavstyles = StyleSheet.create({
   container: {
     padding: 15,
     paddingBottom: 40, // مساحة أسفل الشاشة لتجنب شريط الهاتف
@@ -48,4 +48,4 @@ const { width: screenWidth } = Dimensions.get('window');
   },
 });
 
-export default styles;
+export default myFavstyles;

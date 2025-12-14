@@ -1,3 +1,5 @@
+import { ImageeList } from "./image-list";
+
 export interface Product{
 productId: string | null    
 userId : string | null | undefined;
@@ -8,6 +10,6 @@ description : string | null
 contact: string | null
 catgoryId : string | null
 createdAt : string | null
-imagelist : {id: string; uri : string}[]
+imagelist : ImageeList []
 addressDescription : string | null
 }

@@ -8,27 +8,27 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import styles from "../(styles)/my-favorites-styles";
+import myFavstyles from "../(styles)/my-favorites-styles";
 
 const screenWidth = Dimensions.get("window").width;
 
 export default function MyFavorites() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={myFavstyles.container}>
 
         {/* العنوان */}
-        <Text style={styles.title}>المفضلة</Text>
+        <Text style={myFavstyles.title}>المفضلة</Text>
 
         {/* شبكة المنتجات */}
-        <View style={styles.grid}>
+        <View style={myFavstyles.grid}>
           {myFavorites.map((item: FavoriteProduct) => (
-            <View key={item.id} style={styles.card}>
+            <View key={item.id} style={myFavstyles.card}>
               {item.image && (
-                <Image source={{ uri: item.image }} style={styles.image} />
+                <Image source={{ uri: item.image }} style={myFavstyles.image} />
               )}
-              <Text style={styles.name}>{item.name}</Text>
-              <Text style={styles.price}>{item.price}</Text>
+              <Text style={myFavstyles.name}>{item.name}</Text>
+              <Text style={myFavstyles.price}>{item.price}</Text>
             </View>
           ))}
         </View>

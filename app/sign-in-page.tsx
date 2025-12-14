@@ -23,15 +23,18 @@ export default function SignInPage() {
   const handleSignInPress = async () => {
     if (password == "") {
       alert("الرجاء ادخال كلمةالسر ")
+      return;
     } else if (emailAddress == "") {
       alert("الرجاء ادخال البريد الإلكتروني ")
+      return;
     } else if (emailAddress == "" && password == "") {
       alert("الرجاء ادخال كلمةالسر و البريد الإلكتروني ")
+      return;
     }
+
     await signIn(emailAddress, password);
     router.replace("/(tabs)/home-page");
 
-    alert(error + "فشل تسجل الدخول: ");
   };
 
   return (
