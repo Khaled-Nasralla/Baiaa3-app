@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from "react-native";
 const { width: screenWidth } = Dimensions.get('window');
 
-export const styles = StyleSheet.create({
+ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f6f6f6" },
 
   imagesScroll: { width: screenWidth, height: 280, backgroundColor: "#eee" },
@@ -44,3 +44,4 @@ export const styles = StyleSheet.create({
   reportOptionText: { color: "#fff", fontWeight: "bold", textAlign: "center" },
   reportMessage: { position: "absolute", bottom: 30, left: 20, right: 20, backgroundColor: "#444", padding: 12, borderRadius: 8, zIndex: 10 },
 });
+export default styles;

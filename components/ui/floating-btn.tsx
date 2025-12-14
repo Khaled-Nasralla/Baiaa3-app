@@ -5,7 +5,7 @@ export function FloatingButton() {
   return (
     <TouchableOpacity style={styles.floating} 
     onPress={
- () => router.replace("/add-products-page") } >
+ () => router.push("/add-products-page") } >
       <Text style={styles.plus}>+</Text>
     </TouchableOpacity>
   );

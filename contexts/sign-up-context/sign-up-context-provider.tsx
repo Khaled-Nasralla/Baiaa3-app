@@ -1,5 +1,5 @@
-import { signUpApi } from "@/api/apiUser";
-import { User } from "@/Entities/user";
+import { signUpApi } from "@/api/api-users";
+import { User } from "@/entities/user";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { SignUpContextType } from "./sign-up-context-type";
 
@@ -11,11 +11,11 @@ export function SignUpContextProvider({ children }: { children: ReactNode }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const signUp = async ({ name, surName, emailAddress, password }: User) => {
+    const signUp = async ({ id,name, surName, emailAddress, password }: User) => {
         setLoading(true);
         setError(null)
         try {
-            const date = await signUpApi({ name, surName, emailAddress, password });
+            const date = await signUpApi({ id,name, surName, emailAddress, password });
             setError(date.data?.message)
         } catch (err: any) {
             setError(err.response?.data?.message || err.message)

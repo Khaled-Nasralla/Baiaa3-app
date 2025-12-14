@@ -1,4 +1,9 @@
+import { AddProduct } from "@/api/api-prodcuts";
 import { ThemedView } from "@/components/themed-view";
+import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
+import { Product } from "@/entities/prodcut";
+import { useFetchCategories } from "@/hooks/fetch-categories";
+import { useFetchProvinces } from "@/hooks/fetch-provinces";
 import { Picker } from "@react-native-picker/picker";
 import * as imagePicker from "expo-image-picker";
 import React, { useState } from "react";
@@ -13,21 +18,22 @@ import {
   View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styles } from "./(styles)/add-product-page-styles";
+import styles from "./(styles)/add-product-page-styles";
 
 
 export default function AddProductPage() {
 
-
-  const [image, setImage] = useState<string | null>(null);
-  const [imagelist, setImageList] = useState<{ id: string; uri: string }[]>([]);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [contact, setContact] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedValue, setSelectedValue] = useState("");
+  const [categoryValue, setSelectedValue] = useState("");
   const [selectedCityValue, setSelectedCityValue ] = useState ("");
   const [addressdescription, setaddressdescription] = useState("");
+  const [imagelist, setImageList] = useState<{ id: string; uri: string }[]>([]);
+  const {categories} = useFetchCategories();
+  const {provinces}=useFetchProvinces();
+  const {user} = useSignInContext();
 
   // Multi-image picker (react-native-image-picker)
   const selectImage = async () => {
@@ -69,31 +75,29 @@ export default function AddProductPage() {
   };
 
   // Add product logic
-  const handleAddProduct = () => {
+  const handleAddProduct =  async () => {
     if (!name || !price || !contact) {
       Alert.alert("خطأ", "يرجى تعبئة جميع الحقول المطلوبة");
       return;
     }
+    const productData : Product = { prodcutName : name, price : price, contact : contact, description : description,
+      imagelist : imagelist, createdAt : Date.now.toString(),
+      catgoryId : categoryValue, userId : user?.id, productId : "", province_Id : "", addressDescription : addressdescription
+    }; 
 
-    const productData = {
-      name,
-      price,
-      contact,
-      description,
-      image,
-      imagelist
-    };
+try {
+  const reponse = await AddProduct({product:productData});
 
-    console.log("Product Data:", productData);
-    Alert.alert("تم", "تمت إضافة المنتج بنجاح");
-
+}catch (err : any){
+  console.log("error baby")
+}finally{
     // Reset
     setName("");
     setPrice("");
     setContact("");
     setDescription("");
-    setImage(null);
     setImageList([]);
+}
   };
 
 
@@ -102,6 +106,9 @@ export default function AddProductPage() {
     <SafeAreaView style={styles.container}>
 
     <ScrollView showsVerticalScrollIndicator={true}>
+
+      <Text style={styles.sectionTitle}>معلومات المنتج</Text>
+
 
       <ThemedView>
         {/* Name */}
@@ -125,30 +132,36 @@ export default function AddProductPage() {
        
         </View>
           <Picker
-          selectedValue={selectedValue}
-          onValueChange={(value) => setSelectedValue(value)}
-        >
+          selectedValue={categoryValue}
+          onValueChange={(value) => setSelectedValue(value)}>
           <Picker.Item label="اختر الفئة" value="" />
-          <Picker.Item label="سيارات و دراجات" value="سيارات و دراجات" />
-          <Picker.Item label="هواتف و اجهزة محمولة" value="هواتف و اجهزة محمولة" />
-          <Picker.Item label="معدات" value="معدات" />
-          <Picker.Item label="الالبسة و الموضة" value="الالبسة و الموضة" />
-          <Picker.Item label="التجميل و العناية" value="التجميل و العناية" />
-          <Picker.Item label="مطاعم و كافيهات" value="مطاعم و كافيهات" />
-          <Picker.Item label="فرص عمل" value="فرص عمل" />
-          <Picker.Item label="أجهزة كهربائية" value="أجهزة كهربائية" />
-          <Picker.Item label="أدوات منزلية" value="أدوات منزلية" />
+          {categories.map(cat => (
+    <Picker.Item key={cat.id} label={cat.categoryName} value={cat.id} />
+  ))}
         </Picker>
 
+ {/* Description */}
+        <TextInput
+          placeholder="الوصف"
+          style={styles.inputStyle}
+          value={description}
+          onChangeText={setDescription}
+        />
+
         
+        <Text style={styles.sectionTitle}>الموقع</Text>
+
 
 <Picker
           selectedValue={selectedCityValue}
           onValueChange={(value) => setSelectedCityValue(value)}
         >
           <Picker.Item label="المدينة" value="" />
-          <Picker.Item label="دمشق" value="دمشق" />
-          <Picker.Item label="ريف دمشق" value="دمشق" />
+          {provinces.map(prov => (
+                <Picker.Item key={prov.id} label={prov.provinceName} value={prov.id} />
+          )
+
+          )}
         </Picker>
        
         {/*AddressDescription */}
@@ -159,6 +172,9 @@ export default function AddProductPage() {
         onChangeText={setaddressdescription}
         />
 
+       <Text style={styles.sectionTitle}>التواصل</Text>
+
+
         {/* Contact */}
         <TextInput
           placeholder="رقم التواصل"
@@ -168,13 +184,7 @@ export default function AddProductPage() {
           keyboardType="numeric"
         />
 
-        {/* Description */}
-        <TextInput
-          placeholder="الوصف"
-          style={styles.inputStyle}
-          value={description}
-          onChangeText={setDescription}
-        />
+       
         
           {/* Single Image Picker */}
         <View style={styles.imageBox}>
@@ -220,4 +230,3 @@ export default function AddProductPage() {
     
   );
 }
-

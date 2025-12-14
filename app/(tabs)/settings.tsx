@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { styles } from "../(styles)/settings";
+import styles from "../(styles)/settings";
 
 export default function SettingsScreen() {
   const [subscriptionType, setSubscriptionType] = useState("free");

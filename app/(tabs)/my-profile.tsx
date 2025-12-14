@@ -14,7 +14,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styles } from "../(styles)/my-profile-styles";
+import styles from "../(styles)/my-profile-styles";
 
 type ProfileProps = {
   isOwner?: boolean; // true إذا هذا هو البروفايل الخاص بك

@@ -11,7 +11,8 @@ import {
   View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styles } from "./(styles)/sign-in-page-styles";
+import styles from "./(styles)/sign-in-page-styles";
+
 
 export default function SignInPage() {
   const [emailAddress, setEmailAddress] = useState("");
@@ -75,7 +76,7 @@ export default function SignInPage() {
 
             <TouchableOpacity
               style={styles.secondaryBtn}
-              onPress={() => router.replace("/sign-up-page")}
+              onPress={() => router.push("/sign-up-page")}
             >
               <Text style={styles.secondaryText}>إنشاء حساب</Text>
             </TouchableOpacity>

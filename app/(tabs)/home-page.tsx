@@ -7,7 +7,8 @@ import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styles } from "../(styles)/home-page-styles";
+import homeStyles from "../(styles)/home-page-styles";
+
 
 /* =========================
    منتجات وهمية (أمثلة)
@@ -166,10 +167,10 @@ export default function HomeScreen() {
   }, [selectedCategory]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={homeStyles.container}>
       <Serach />
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sectionBar}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={homeStyles.sectionBar}>
         {CATEGORIES.map((item) => (
           <SectionsBar
             key={item.key}
@@ -180,7 +181,7 @@ export default function HomeScreen() {
       </ScrollView>
 
       <ScrollView>
-        <View style={styles.grid}>
+        <View style={homeStyles.grid}>
           {filteredProducts.map((item) => (
             <Template key={item.id} onPress={onPress} />
           ))}
