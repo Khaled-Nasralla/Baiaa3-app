@@ -1,4 +1,6 @@
+import { AddProduct } from "@/api/api-prodcuts";
 import { ThemedView } from "@/components/themed-view";
+import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
 import { Product } from "@/entities/prodcut";
 import { useFetchCategories } from "@/hooks/fetch-catgories";
 import { Picker } from "@react-native-picker/picker";
@@ -9,19 +11,17 @@ import {
   Button,
   Image,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { styles } from "./(styles)/add-product-page-styles";
+
 
 export default function AddProductPage() {
 
-
-  const [image, setImage] = useState<string | null>(null);
-  const [imagelist, setImageList] = useState<{ id: string; uri: string }[]>([]);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [contact, setContact] = useState("");
@@ -29,8 +29,9 @@ export default function AddProductPage() {
   const [categoryValue, setSelectedValue] = useState("");
   const [selectedCityValue, setSelectedCityValue ] = useState ("");
   const [addressdescription, setaddressdescription] = useState("");
-  const [prodcut, setProdcut]=useState<Product>();
+  const [imagelist, setImageList] = useState<{ id: string; uri: string }[]>([]);
   const {categories,error,loading} = useFetchCategories();
+  const {user} = useSignInContext();
 
   // Multi-image picker (react-native-image-picker)
   const selectImage = async () => {
@@ -72,33 +73,29 @@ export default function AddProductPage() {
   };
 
   // Add product logic
-  const handleAddProduct = () => {
+  const handleAddProduct =  async () => {
     if (!name || !price || !contact) {
       Alert.alert("خطأ", "يرجى تعبئة جميع الحقول المطلوبة");
       return;
     }
+    const productData : Product = { prodcutName : name, price : price, contact : contact, description : description,
+      imagelist : imagelist, createdAt : Date.now.toString(),
+      catgoryId : categoryValue, userId : user?.id, productId : "", province_Id : "", addressDescription : addressdescription
+    }; 
 
-    const productData : Product = {
-      prodcutName : name,
-      price : price,
-      contact : contact,
-      description : description,
-      imagelist : imagelist,
-      createdAt : Date.now.toString(),
-      catgoryId : 
-    };
+try {
+  const reponse = await AddProduct({product:productData});
 
-    setProdcut(productData);
-    console.log("Product Data:", productData);
-    Alert.alert("تم", "تمت إضافة المنتج بنجاح");
-
+}catch (err : any){
+  console.log("error baby")
+}finally{
     // Reset
     setName("");
     setPrice("");
     setContact("");
     setDescription("");
-    setImage(null);
     setImageList([]);
+}
   };
 
 
@@ -131,15 +128,11 @@ export default function AddProductPage() {
         </View>
           <Picker
           selectedValue={categoryValue}
-          onValueChange={(value) => setSelectedValue(value)}
-        >
+          onValueChange={(value) => setSelectedValue(value)}>
           <Picker.Item label="اختر الفئة" value="" />
-          <Picker.Item 
-         
-          <Picker.Item label="الالبسة و الموضة" value="الالبسة و الموضة" />
-          <Picker.Item label="هواتف و اجهزة محمولة" value="هواتف و اجهزة محمولة" />
-          <Picker.Item label="معدات" value="معدات" />
-          <Picker.Item label="التجميل و العناية" value="التجميل و العناية" />
+          {categories.map(category=> (
+            <Picker.Item key={category.categoryId} label={category.categoryName} value={category.categoryId}/>
+          ))}
         </Picker>
         
 
@@ -221,98 +214,3 @@ export default function AddProductPage() {
     
   );
 }
-
-const styles = StyleSheet.create({
-
-imageBox: {
-  width: '100%',
-  height: 140,
-  backgroundColor: '#f1f1f1',
-  borderRadius: 12,
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginBottom: 15,
-},
-
-uploadIcon: {
-  width: 60,
-  height: 60,
-  resizeMode: 'contain',
-  marginBottom: 6,
-},
-
-uploadText: {
-  fontSize: 14,
-  color: '#555',
-},
-
-  inputStyle: {
-    margin: 5,
-    padding: 10,
-    color: "#1b8bff",
-    borderRadius: 10,
-    backgroundColor: "#f0f0f0",
-    justifyContent:"center",
-    alignContent:"center",
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 20
-  },
-  priceInputContainer: {
-    flexDirection: "row-reverse",
-    justifyContent:"space-between",
-    alignItems: "center",
-    padding: 10,
-  },
-  currencySymbolStyle: {
-    fontSize: 16,
-    color: "#555",
-    marginRight: 8
-  },
-  imagePickerButton: {
-    backgroundColor: "#1b8bff",
-    padding: 10,
-    borderRadius: 8,
-    alignItems: "center",
-    marginVertical: 10
-  },
-  imagePickerButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold"
-  },
-  imagesPreviewContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginTop: 10,
-    marginBottom: 10
-  },
-  previewImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 5,
-    margin: 5
-  },
-  imageWrapper: { 
-  position: 'relative',
-  margin: 5,
-},
-closeButton: {       // زر ×
-  position: 'absolute',
-  top: -5,
-  right: -5,
-  backgroundColor: 'red',
-  borderRadius: 12,
-  width: 24,
-  height: 24,
-  justifyContent: 'center',
-  alignItems: 'center',
-},
-closeButtonText: {   // نص × داخل الزر
-  color: 'white',
-  fontWeight: 'bold',
-  fontSize: 16,
-},
-});
