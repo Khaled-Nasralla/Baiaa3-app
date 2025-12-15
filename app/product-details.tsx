@@ -119,7 +119,7 @@ export default function ProductDetails() {
   const {
     views = 0,
     publisherId = "1",
-    publisherName = "Hesham Alhajj",
+    publisherName = "غير معروف",
     publisherAvatarUri = null,
     memberSince = "2024",
     addressDescription = "لم يتم إضافة وصف العنوان",
@@ -170,13 +170,13 @@ export default function ProductDetails() {
           <Text style={styles.price}>{product?.price}</Text>
           <Text style={styles.location}>{product?.province.provinceName}</Text>
           <Text style={styles.postedTime}>{product?.createdAt}</Text>
+
           <Text style={styles.sectionTitle}>المنطقة و وصف العنوان</Text>
           <Text style={styles.description}>{addressDescription}</Text>
 
           <Text style={styles.sectionTitle}>الوصف</Text>
           <Text style={styles.description}>{product?.description}</Text>
 
-        
           <Text style={styles.sectionTitle}>التواصل</Text>
           <Text style={styles.phone}>{phoneNumber}</Text>
 
@@ -202,7 +202,6 @@ export default function ProductDetails() {
             <View style={{ flex: 1 }}>
               <View style={styles.sellerHeader}>
                 <Text style={styles.sellerName}>{publisherName}</Text>
-
                 <TouchableOpacity
                   onPress={() => setReportModalVisible(true)}
                   style={styles.reportBtn}
@@ -217,9 +216,23 @@ export default function ProductDetails() {
 
         {/* تكبير الصورة */}
         <Modal visible={modalVisible} transparent>
-          <TouchableOpacity style={styles.modalContainer} onPress={() => setModalVisible(false)}>
-            <Image source={selectedImage} style={styles.modalImage} />
-          </TouchableOpacity>
+          <View style={styles.modalContainer}>
+            <ScrollView
+              maximumZoomScale={5}
+              minimumZoomScale={1}
+              contentContainerStyle={styles.modalContent}
+            >
+              <TouchableOpacity
+                style={{ flex: 1 }}
+                onPress={() => setModalVisible(false)}
+              >
+                <Image
+                  source={{ uri: `${BASE_URL}${selectedImage?.imageUrl}` }}
+                  style={styles.modalImage}
+                />
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
         </Modal>
 
         {/* البلاغ */}
