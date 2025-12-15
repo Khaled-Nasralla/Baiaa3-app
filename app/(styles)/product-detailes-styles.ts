@@ -50,6 +50,20 @@ phone: {
   marginTop: 6,
 },
 
+imagesWrapper: {
+  position: "relative",
+},
+
+favoriteButton: {
+  position: "absolute",
+  top: 12,
+  right: 12,
+  backgroundColor: "rgba(0,0,0,0.6)",
+  padding: 8,
+  borderRadius: 20,
+},
+
 
 });
+
 export default styles;
