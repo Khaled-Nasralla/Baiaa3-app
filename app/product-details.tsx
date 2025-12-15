@@ -1,4 +1,5 @@
 import { useGetProducts } from "@/contexts/get-products-context/get-products-context-provider";
+import { useFetchUser } from "@/hooks/fetch-user";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -50,6 +51,7 @@ export default function ProductDetails() {
   const [reportMessage, setReportMessage] = useState("");
 
   const {product} = useGetProducts();
+  const {user} = useFetchUser(product?.userId);
 
   const openImage = (img: any) => {
     setSelectedImage(img);
@@ -69,7 +71,7 @@ export default function ProductDetails() {
   const {
     views = 0,
     publisherId = "1",
-    publisherName = "Hesham Alhajj",
+    publisherName = user?.name,
     publisherAvatarUri = null,
     memberSince = "2024",
   } = params;
@@ -96,8 +98,7 @@ export default function ProductDetails() {
           { product?.imageList.map((img, index) => (
             <TouchableOpacity key={index} onPress={() => openImage(img.imageUrl)}>
              <Image source={{ uri: `${BASE_URL}${img.imageUrl}` }} style={styles.productImage} />
-            </TouchableOpacity>
-          )) } 
+            </TouchableOpacity> ))} 
         </ScrollView>
 
         {/* ---------- تفاصيل المنتج ---------- */}
@@ -140,7 +141,7 @@ export default function ProductDetails() {
                     })
                   }
                 >
-                  <Text style={styles.sellerName}>{publisherName}</Text>
+                  <Text style={styles.sellerName}>{`${user?.name ?? ""} ${user?.surName ?? ""}`}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity

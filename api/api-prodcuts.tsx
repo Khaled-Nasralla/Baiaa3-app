@@ -14,13 +14,11 @@ export async function AddProduct({formData} : {formData:FormData}){
 
 export async function GetProducts():Promise<Product[]>{
     const response = await api.get("/product/products")
-
     return response.data.data;
 }
 
 export async function GetProductDetails(productId:string):Promise<Product> {
    const response = await api.get(`/product/details/${productId}`)
-       console.log(response.data.data);
    return response.data.data;
 }
 

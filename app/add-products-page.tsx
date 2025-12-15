@@ -99,8 +99,8 @@ export default function AddProductPage() {
       } as any);
     });
     try {
-     await AddProduct({ formData: formData });
-     router.replace("/(tabs)/home-page");
+      await AddProduct({ formData: formData });
+      router.replace("/(tabs)/home-page");
 
     } catch (err: any) {
       console.log(err.message);
@@ -113,6 +113,7 @@ export default function AddProductPage() {
 
       <ScrollView showsVerticalScrollIndicator={true}>
 
+        <Text style={styles.sectionTitle}>معلومات المنتج</Text>
         <ThemedView>
           {/* Name */}
           <TextInput
@@ -121,7 +122,6 @@ export default function AddProductPage() {
             value={name}
             onChangeText={setName}
           />
-
           {/* Price */}
           <View style={styles.priceInputContainer}>
             <Text style={styles.currencySymbolStyle}>ل.س</Text>
@@ -130,9 +130,7 @@ export default function AddProductPage() {
               style={styles.inputStyle}
               value={price}
               onChangeText={setPrice}
-              keyboardType="numeric"
-            />
-
+              keyboardType="numeric" />
           </View>
           <Picker
             selectedValue={categoryValue}
@@ -143,7 +141,16 @@ export default function AddProductPage() {
             ))}
           </Picker>
 
+          {/* Description */}
+          <TextInput
+            placeholder="الوصف"
+            style={styles.inputStyle}
+            value={description}
+            onChangeText={setDescription}
+          />
 
+
+          <Text style={styles.sectionTitle}>الموقع</Text>
           <Picker
             selectedValue={selectedCityValue}
             onValueChange={(value) => setSelectedCityValue(value)}
@@ -164,6 +171,9 @@ export default function AddProductPage() {
             onChangeText={setaddressdescription}
           />
 
+          <Text style={styles.sectionTitle}>التواصل</Text>
+
+
           {/* Contact */}
           <TextInput
             placeholder="رقم التواصل"
@@ -173,13 +183,7 @@ export default function AddProductPage() {
             keyboardType="numeric"
           />
 
-          {/* Description */}
-          <TextInput
-            placeholder="الوصف"
-            style={styles.inputStyle}
-            value={description}
-            onChangeText={setDescription}
-          />
+
 
           {/* Single Image Picker */}
           <View style={styles.imageBox}>
