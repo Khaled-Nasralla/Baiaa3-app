@@ -3,16 +3,21 @@ import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import {
+  Alert,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { styles } from "./(styles)/verify-id-styles";
 export default function VerifyID() {
   const [permission, requestPermission] = useCameraPermissions();
   const [step, setStep] = useState<"id" | "selfie">("id");
+  const [idPhoto, setIdPhoto] = useState<any>(null);
+  const [selfiePhoto, setSelfiePhoto] = useState<any>(null);
+
   const cameraRef = useRef<CameraView | null>(null);
   const router = useRouter();
 
@@ -21,13 +26,23 @@ export default function VerifyID() {
 
     const photo = await cameraRef.current.takePictureAsync({
       quality: 0.7,
+      skipProcessing: true,
     });
 
     if (!photo) return;
 
     if (step === "id") {
+      setIdPhoto(photo);
       setStep("selfie");
     } else {
+      setSelfiePhoto(photo);
+
+      if (!idPhoto) {
+        Alert.alert("خطأ", "يرجى تصوير الهوية أولاً");
+        return;
+      }
+
+      // نجاح التحقق المنطقي
       router.replace("/payment-method");
     }
   };
@@ -61,7 +76,8 @@ export default function VerifyID() {
       {/* الكاميرا */}
       <CameraView
         ref={cameraRef}
-        style={StyleSheet.absoluteFill}
+        style={StyleSheet.absoluteFillObject}
+
         facing={step === "id" ? "back" : "front"}
       />
 
@@ -89,6 +105,14 @@ export default function VerifyID() {
           ]}
         />
 
+        {/* معاينة الهوية أثناء السيلفي */}
+        {step === "selfie" && idPhoto && (
+          <Image
+            source={{ uri: idPhoto.uri }}
+            style={styles.preview}
+          />
+        )}
+
         {/* زر التصوير */}
         <View style={styles.bottom}>
           <TouchableOpacity
@@ -102,87 +126,3 @@ export default function VerifyID() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#000" },
-
-  overlay: {
-    flex: 1,
-    justifyContent: "space-between",
-  },
-
-  header: {
-    marginTop: 20,
-    alignItems: "center",
-    gap: 10,
-  },
-
-  headerText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "600",
-  },
-
-  frame: {
-    alignSelf: "center",
-    width: "85%",
-    height: 220,
-    borderWidth: 2,
-    borderColor: "#fff",
-    borderRadius: 16,
-    marginTop: 40,
-  },
-
-  selfieFrame: {
-    width: 240,
-    height: 240,
-    borderRadius: 120,
-  },
-
-  bottom: {
-    alignItems: "center",
-    marginBottom: 40, // بعيد عن أسفل الهاتف
-  },
-
-  captureButton: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    borderWidth: 4,
-    borderColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  innerButton: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: "#fff",
-  },
-
-  center: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  permissionText: {
-    fontSize: 16,
-    marginBottom: 20,
-    textAlign: "center",
-  },
-
-  permissionButton: {
-    backgroundColor: "#2F6BFF",
-    paddingHorizontal: 30,
-    paddingVertical: 14,
-    borderRadius: 12,
-  },
-
-  permissionButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-});
