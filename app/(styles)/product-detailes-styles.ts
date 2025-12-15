@@ -38,10 +38,18 @@ const { width: screenWidth } = Dimensions.get('window');
 
   // ---------- Styles البلاغ ----------
   reportModalOverlay: { flex: 1, backgroundColor: "rgba(0,0,0,0.5)", justifyContent: "center", alignItems: "center" },
+  
   reportModalContent: { width: "80%", backgroundColor: "#fff", borderRadius: 10, padding: 20, alignItems: "center" },
   reportTitle: { fontSize: 18, fontWeight: "bold", marginBottom: 15, writingDirection: "rtl" },
   reportOption: { width: "100%", paddingVertical: 12, paddingHorizontal: 10, backgroundColor: "#e33", borderRadius: 8, marginBottom: 10 },
   reportOptionText: { color: "#fff", fontWeight: "bold", textAlign: "center" },
   reportMessage: { position: "absolute", bottom: 30, left: 20, right: 20, backgroundColor: "#444", padding: 12, borderRadius: 8, zIndex: 10 },
+phone: {
+  fontSize: 15,
+  color: "#333",
+  marginTop: 6,
+},
+
+
 });
 export default styles;

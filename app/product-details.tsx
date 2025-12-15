@@ -33,6 +33,8 @@ type ProductDetailsParams = {
   publisherName?: string;
   publisherAvatarUri?: string | null;
   memberSince?: string;
+  addressDescription?: string;   // وصف العنوان
+  phoneNumber?: string;          // رقم الهاتف
 };
 
 type RouteProps = RouteProp<{ ProductDetails: ProductDetailsParams }, "ProductDetails">;
@@ -74,6 +76,8 @@ export default function ProductDetails() {
     publisherName = user?.name,
     publisherAvatarUri = null,
     memberSince = "2024",
+  addressDescription = "لم يتم إضافة وصف العنوان",
+  phoneNumber = "غير متوفر",
   } = params;
 
 
@@ -101,15 +105,29 @@ export default function ProductDetails() {
             </TouchableOpacity> ))} 
         </ScrollView>
 
-        {/* ---------- تفاصيل المنتج ---------- */}
-        <View style={styles.detailsBox}>
+
+          
+          <View style={styles.detailsBox}>
           <Text style={styles.productName}>{product?.productName}</Text>
           <Text style={styles.price}>{product?.price}</Text>
           <Text style={styles.location}>{product?.province.provinceName}</Text>
           <Text style={styles.postedTime}>{product?.createdAt}</Text>
 
           <Text style={styles.sectionTitle}>الوصف</Text>
+          
           <Text style={styles.description}>{product?.description}</Text>
+          <Text style={styles.sectionTitle}>المنطقة و وصف العنوان</Text>
+
+          <Text style={styles.description}>
+          {addressDescription}
+          </Text>
+
+
+          <Text style={styles.sectionTitle}>التواصل</Text>
+
+          <Text style={styles.phone}>
+           {phoneNumber}
+          </Text>
 
           <Text style={styles.views}>{views} مشاهدة</Text>
 
