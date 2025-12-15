@@ -1,3 +1,4 @@
+import { ImageItem } from "@/entities/image-item";
 
 export interface AddProductDto {
  userId: string | null | undefined ;
@@ -8,5 +9,5 @@ export interface AddProductDto {
   contact: string;
   categoryId: string;
   addressDescription: string;
-  imagesList: { id : string,uri: string }[];
+  imageList: ImageItem[];
 }

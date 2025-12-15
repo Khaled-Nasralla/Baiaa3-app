@@ -1,7 +1,5 @@
-import { Template } from "@/components/ui/template";
 import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
 import * as ImagePicker from "expo-image-picker";
-import { router } from "expo-router";
 import React, { useState } from "react";
 import {
   Image,
@@ -23,8 +21,8 @@ type ProfileProps = {
 export default function ProfileScreen({ isOwner = true }: ProfileProps) {
 
   const [profileImage, setProfileImage] = useState<any>(null);
-  const [name, setName] = useState("Hesham Alhajj");
-  const [memberSince, setMemberSince] = useState("2024");
+  const [name, setName] = useState("");
+  const [memberSince, setMemberSince] = useState("");
   const [contactInfo, setContactInfo] = useState({
     email: "example@email.com",
     phone: "00963123456789",
@@ -127,12 +125,7 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
           <Text style={styles.sectionTitle}>منتجاتي</Text>
 
           <View style={styles.grid}>
-            {myProducts.map((item) => (
-              <Template
-                key={item.id}
-                onPress={() => router.push("/product-details")}
-              />
-            ))}
+          
           </View>
         </View>
 

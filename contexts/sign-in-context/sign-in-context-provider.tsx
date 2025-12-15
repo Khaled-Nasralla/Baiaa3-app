@@ -10,27 +10,27 @@ const signInContext = createContext<SignInContextType | undefined>(undefined);
 export function SignInContextProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | undefined>(undefined);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
 
     const signIn = async (emailAddress: string | null, password: string | null) => {
         setLoading(true);
-        setError(null);
         try {
-            const data = await signInApi(emailAddress, password);
-            setUser(data.data.user);
-            console.log(data.data.user)
+            const response = await signInApi(emailAddress, password);
+            setUser(response.data.user);
+            return { success: true };
         } catch (err: any) {
-            setError(err.message);
+            const message = err.response?.data?.message || "فشل تسجيل الدخول";
+            return { success: false, message };
         } finally {
             setLoading(false);
         }
-    }
+    };
+
 
     const signOut = () => {
         setUser(undefined);
     }
     return (
-        <signInContext.Provider value={{ user, loading, error, signIn,signOut }}  >
+        <signInContext.Provider value={{ user, loading, signIn, signOut }}  >
             {children}
         </signInContext.Provider>
     )
