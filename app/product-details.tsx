@@ -94,7 +94,7 @@ export default function ProductDetails() {
           style={styles.imagesScroll}
         >
           { product?.imageList.map((img, index) => (
-            <TouchableOpacity key={index} onPress={() => openImage(img)}>
+            <TouchableOpacity key={index} onPress={() => openImage(img.imageUrl)}>
              <Image source={{ uri: `${BASE_URL}${img.imageUrl}` }} style={styles.productImage} />
             </TouchableOpacity>
           )) } 
@@ -164,7 +164,7 @@ export default function ProductDetails() {
               contentContainerStyle={styles.modalContent}
             >
               <TouchableOpacity style={{ flex: 1 }} onPress={() => setModalVisible(false)}>
-                <Image source={selectedImage} style={styles.modalImage} />
+                <Image source={{ uri: `${BASE_URL}${selectedImage}` }} style={styles.modalImage} />
               </TouchableOpacity>
             </ScrollView>
           </View>
