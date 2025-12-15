@@ -1,6 +1,7 @@
 import { images } from "@/constants/images";
 import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -13,6 +14,7 @@ import {
   View,
 } from "react-native";
 import styles from "../(styles)/settings";
+
 
 export default function SettingsScreen() {
   const [subscriptionType, setSubscriptionType] = useState("free");
@@ -143,29 +145,35 @@ export default function SettingsScreen() {
                 setSubscriptionModal(false);
               }}
             >
-              <Text style={styles.subscriptionTitle}>الاشتراك الذهبي – 7$</Text>
-              <Text style={styles.subscriptionDesc}>
-                نشر 15 منشور – ظهور أعلى الصفحة – حذف بعد شهر
-              </Text>
-            </TouchableOpacity>
+              
+             <TouchableOpacity
+  style={styles.subscriptionOption}
+  onPress={async () => {
+    await AsyncStorage.setItem("pendingSubscription", "gold");
+    setSubscriptionModal(false);
+    router.push("/verify-id");
+  }}
+>
+  <Text style={styles.subscriptionTitle}>الاشتراك الذهبي – 7$</Text>
+  <Text style={styles.subscriptionDesc}>
+    نشر 15 منشور – ظهور أعلى الصفحة – حذف بعد شهر
+  </Text>
+</TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.subscriptionOption}
-              onPress={() => {
-                setSubscriptionType("business");
-                setSubscriptionModal(false);
-              }}
-            >
-              <Text style={styles.subscriptionTitle}>اشتراك الشركات – 12$</Text>
-              <Text style={styles.subscriptionDesc}>
-                عدد غير محدود – توثيق – ظهور أعلى الصفحة
-              </Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+  style={styles.subscriptionOption}
+  onPress={async () => {
+    await AsyncStorage.setItem("pendingSubscription", "business");
+    setSubscriptionModal(false);
+    router.push("/verify-id");
+  }}
+>
+  <Text style={styles.subscriptionTitle}>اشتراك الشركات – 12$</Text>
+  <Text style={styles.subscriptionDesc}>
+    عدد غير محدود – توثيق – ظهور أعلى الصفحة
+  </Text>
+</TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.modalClose}
-              onPress={() => setSubscriptionModal(false)}
-            >
               <Text style={styles.cancelText}>إغلاق</Text>
             </TouchableOpacity>
           </View>
