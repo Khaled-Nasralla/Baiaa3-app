@@ -1,4 +1,4 @@
-import { images } from "@/constants/images";
+import { useGetProducts } from "@/contexts/get-products-context/get-products-context-provider";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -42,12 +42,14 @@ type RouteProps = RouteProp<{ ProductDetails: ProductDetailsParams }, "ProductDe
 export default function ProductDetails() {
   const route = useRoute<RouteProps>();
   const params = route.params || {};
-
+  const BASE_URL = "https://dewayne-interrepellent-unpertinently.ngrok-free.dev";
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState<any>(null);
 
   const [reportModalVisible, setReportModalVisible] = useState(false);
   const [reportMessage, setReportMessage] = useState("");
+
+  const {product} = useGetProducts();
 
   const openImage = (img: any) => {
     setSelectedImage(img);
@@ -65,11 +67,6 @@ export default function ProductDetails() {
   };
 
   const {
-    productName = "اسم المنتج هنا",
-    price = "150 يورو",
-    location = "برلين، ألمانيا",
-    postedTime = "منذ ساعتين",
-    description = "الوصف الإجباري",
     views = 0,
     publisherId = "1",
     publisherName = "Hesham Alhajj",
@@ -77,12 +74,6 @@ export default function ProductDetails() {
     memberSince = "2024",
   } = params;
 
-  const productImages = [
-    images.clothes,
-    images.electric,
-    images.jobs,
-    images.makeUp,
-  ];
 
   const STATUS_BAR_HEIGHT = Platform.OS === "android" ? StatusBar.currentHeight || 25 : 0;
 
@@ -102,22 +93,22 @@ export default function ProductDetails() {
           showsHorizontalScrollIndicator={false}
           style={styles.imagesScroll}
         >
-          {productImages.map((img, index) => (
+          { product?.imageList.map((img, index) => (
             <TouchableOpacity key={index} onPress={() => openImage(img)}>
-              <Image source={img} style={styles.productImage} />
+             <Image source={{ uri: `${BASE_URL}${img.imageUrl}` }} style={styles.productImage} />
             </TouchableOpacity>
-          ))}
+          )) } 
         </ScrollView>
 
         {/* ---------- تفاصيل المنتج ---------- */}
         <View style={styles.detailsBox}>
-          <Text style={styles.productName}>{productName}</Text>
-          <Text style={styles.price}>{price}</Text>
-          <Text style={styles.location}>{location}</Text>
-          <Text style={styles.postedTime}>{postedTime}</Text>
+          <Text style={styles.productName}>{product?.productName}</Text>
+          <Text style={styles.price}>{product?.price}</Text>
+          <Text style={styles.location}>{product?.province.provinceName}</Text>
+          <Text style={styles.postedTime}>{product?.createdAt}</Text>
 
           <Text style={styles.sectionTitle}>الوصف</Text>
-          <Text style={styles.description}>{description}</Text>
+          <Text style={styles.description}>{product?.description}</Text>
 
           <Text style={styles.views}>{views} مشاهدة</Text>
 
@@ -127,11 +118,9 @@ export default function ProductDetails() {
               onPress={() =>
                 router.push({
                   pathname: "/(tabs)/my-profile",
-
                   params: { userId: publisherId, isOwner: "false" },
                 })
-              }
-            >
+              }>
               {publisherAvatarUri ? (
                 <Image source={{ uri: publisherAvatarUri }} style={styles.avatar} />
               ) : (

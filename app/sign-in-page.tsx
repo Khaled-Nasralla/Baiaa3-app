@@ -17,25 +17,20 @@ import styles from "./(styles)/sign-in-page-styles";
 export default function SignInPage() {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
-  const { loading, error, signIn } = useSignInContext()
+  const { loading, signIn } = useSignInContext()
 
 
   const handleSignInPress = async () => {
-    if (password == "") {
-      alert("الرجاء ادخال كلمةالسر ")
-      return;
-    } else if (emailAddress == "") {
-      alert("الرجاء ادخال البريد الإلكتروني ")
-      return;
-    } else if (emailAddress == "" && password == "") {
-      alert("الرجاء ادخال كلمةالسر و البريد الإلكتروني ")
-      return;
-    }
+  const result = await signIn(emailAddress, password);
 
-    await signIn(emailAddress, password);
-    router.replace("/(tabs)/home-page");
+  if (!result.success) {
+    alert(result.message);
+    return;
+  }
 
-  };
+  router.replace("/(tabs)/home-page");
+};
+
 
   return (
 
@@ -53,7 +48,7 @@ export default function SignInPage() {
             value={emailAddress} onChangeText={setEmailAddress}
           />
           <TextInput style={styles.input} placeholder="كلمة السر" placeholderTextColor="#999"
-           value={password} onChangeText={setPassword} secureTextEntry
+           value={password} onChangeText={setPassword} secureTextEntry textContentType ="password"
           />
 
           {/* Login Button */}
