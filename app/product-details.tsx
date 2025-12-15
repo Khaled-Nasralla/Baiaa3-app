@@ -119,14 +119,14 @@ export default function ProductDetails() {
           <Text style={styles.sectionTitle}>المنطقة و وصف العنوان</Text>
 
           <Text style={styles.description}>
-          {addressDescription}
+          {product?.addressDescription}
           </Text>
 
 
           <Text style={styles.sectionTitle}>التواصل</Text>
 
           <Text style={styles.phone}>
-           {phoneNumber}
+           {product?.contact}
           </Text>
 
           <Text style={styles.views}>{views} مشاهدة</Text>
