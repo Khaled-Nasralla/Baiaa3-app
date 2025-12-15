@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   },
 
   inputStyle: {
+    flex:1,
     backgroundColor: "#f9f9f9",
     borderWidth: 1,
     borderColor: "#d6d6d6",
@@ -43,6 +44,8 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     paddingHorizontal: 14,
     marginBottom: 12,
+    flexWrap:"wrap"
+    
   },
 
   priceInput: {
