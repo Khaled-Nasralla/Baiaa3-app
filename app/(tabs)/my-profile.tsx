@@ -1,5 +1,8 @@
+import { Template } from "@/components/ui/template";
 import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
+import { useFetchUserProducts } from "@/hooks/fetch-user-products";
 import * as ImagePicker from "expo-image-picker";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import {
   Image,
@@ -27,18 +30,13 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
     email: "example@email.com",
     phone: "00963123456789",
   });
-  const {user} = useSignInContext();
-    
+  const { user } = useSignInContext();
+  const { products } = useFetchUserProducts(user?.id);
 
+  const onPress = async (prodcutId: any) => {
+    router.push("/product-details");
+  };
 
-  const [myProducts, setMyProducts] = useState([
-    { id: "1", title: "منتج 1" },
-    { id: "2", title: "منتج 2" },
-    { id: "3", title: "منتج 3" },
-    { id: "4", title: "منتج 4" },
-    { id: "5", title: "منتج 5" },
-    { id: "6", title: "منتج 6" },
-  ]);
 
   const pickImage = async () => {
     if (!isOwner) return;
@@ -47,7 +45,6 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
     });
-
     if (!result.canceled) {
       setProfileImage(result.assets[0].uri);
     }
@@ -125,7 +122,18 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
           <Text style={styles.sectionTitle}>منتجاتي</Text>
 
           <View style={styles.grid}>
-          
+            {products?.map((item) =>
+              item.imageList.length > 0 ? (
+                <Template
+                  key={item.productId}
+                  onPress={() => onPress(item.productId)}
+                  price={item.price}
+                  prodcutName={item.productName}
+                  provinceName={item.province.provinceName}
+                  imageUrl={item.imageList[0].imageUrl}
+                />
+              ) : null
+            )}
           </View>
         </View>
 

@@ -14,7 +14,18 @@ export async function AddProduct({formData} : {formData:FormData}){
 
 export async function GetProducts():Promise<Product[]>{
     const response = await api.get("/product/products")
-    console.log(response.data.data);
+
+    return response.data.data;
+}
+
+export async function GetProductDetails(productId:string):Promise<Product> {
+   const response = await api.get(`/product/details/${productId}`)
+       console.log(response.data.data);
+   return response.data.data;
+}
+
+export async function GetProductsByUserId(userId:string | undefined):Promise<Product[]> {
+   const response = await api.get(`/product/products/${userId}`)
     return response.data.data;
 }
 
@@ -28,6 +39,9 @@ export async function GetProvince():Promise<Province[]> {
       const response = await api.get("/province/provinces");
      return response.data.data;  
 }
+
+
+
 
 
 

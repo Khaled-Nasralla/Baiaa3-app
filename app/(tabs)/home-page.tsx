@@ -4,6 +4,7 @@ import { Serach } from "@/components/ui/search";
 import { SectionsBar } from "@/components/ui/sections-bar";
 import { Template } from "@/components/ui/template";
 import { images } from "@/constants/images";
+import { useGetProducts } from "@/contexts/get-products-context/get-products-context-provider";
 import { useFetchProducts } from "@/hooks/fetch-products";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
@@ -151,9 +152,13 @@ const CATEGORIES = [
 
 export default function HomeScreen() {
   const [selectedCategory, setSelectedCategory] = useState("allProduts");
-  const { products } = useFetchProducts();
+  const [prodcutId ,setProdcutId] = useState("");
 
-  const onPress = () => {
+  const {getProductDetails} = useGetProducts();
+  const {products} = useFetchProducts();
+
+  const onPress = async (prodcutId:any) => {
+    await getProductDetails(prodcutId);
     router.push("/product-details");
   };
 
@@ -185,11 +190,11 @@ export default function HomeScreen() {
 
       <ScrollView showsVerticalScrollIndicator={true}>
         <ThemedView style={homeStyles.grid}>
-          {products.map((item) =>
+          {products?.map((item) =>
             item.imageList.length > 0 ? (
               <Template
                 key={item.productId}
-                onPress={onPress}
+                onPress={()=>onPress(item.productId)}
                 price={item.price}
                 prodcutName={item.productName}
                 provinceName={item.province.provinceName}

@@ -7,7 +7,7 @@ type TemplateProps = {
   prodcutName : string | null,
   price : string | null,
   provinceName : string | null,
-  imageUrl : string
+  imageUrl : string | null
 };
 
 export function Template( { onPress ,prodcutName,price,provinceName,imageUrl }: TemplateProps) {

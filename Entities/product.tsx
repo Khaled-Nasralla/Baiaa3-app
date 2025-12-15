@@ -1,26 +1,26 @@
 import { Province } from "./province";
 
 export interface Product {
-  productId: string;
-  userId: string;
+    productId: string;
+    userId: string;
 
-  productName: string;
+    productName: string;
 
-  provinceId: string;
-  province: Province; // optional (important)
+    provinceId: string;
+    province: Province;
 
-  price: string;
-  description: string;
-  contact: string;
+    price: string;
+    description: string;
+    contact: string;
 
-  categoryId: string;
+    categoryId: string;
 
-  createdAt: string; // ISO date from backend
+    createdAt: string;
 
-  imageList: {
+   imageList: {
     id: string;
     imageUrl: string;
   }[];
 
-  addressDescription: string;
+    addressDescription: string;
 }

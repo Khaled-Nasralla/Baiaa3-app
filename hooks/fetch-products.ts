@@ -7,7 +7,9 @@ export function useFetchProducts() {
 
 
   useEffect(() => {
-    const fetchProducts = async () => {  
+     
+    const fetchProducts = async () => { 
+    
         const data = await GetProducts(); // API call
         setProducts(data);
     };
