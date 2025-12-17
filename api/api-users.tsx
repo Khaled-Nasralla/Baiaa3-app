@@ -24,3 +24,12 @@ export async function GetUserById(userId:string): Promise<User> {
   return response.data.data;
 }
 
+export async function UpdateProfileImage({formData} : {formData:FormData}):Promise<string>{
+ const response = await api.post("/users/profileImage", formData, {
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
+});
+console.log(response.data);
+return response.data.imageUrl;
+}

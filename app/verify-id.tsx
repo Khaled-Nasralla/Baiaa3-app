@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styles } from "./(styles)/verify-id-styles";
+import styles from "./(styles)/verify-id-styles";
 export default function VerifyID() {
   const [permission, requestPermission] = useCameraPermissions();
   const [step, setStep] = useState<"id" | "selfie">("id");

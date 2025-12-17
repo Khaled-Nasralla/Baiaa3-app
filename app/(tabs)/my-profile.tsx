@@ -1,9 +1,10 @@
+import { UpdateProfileImage } from "@/api/api-users";
 import { Template } from "@/components/ui/template";
 import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
 import { useFetchUserProducts } from "@/hooks/fetch-user-products";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   Platform,
@@ -23,7 +24,8 @@ type ProfileProps = {
 
 export default function ProfileScreen({ isOwner = true }: ProfileProps) {
 
-  const [profileImage, setProfileImage] = useState<any>(null);
+  const [profileImage, setProfileImage] = useState<{ uri: string }>();
+    const [imageUrl, setImageUrl] = useState<string|null>(null);
   const [name, setName] = useState("");
   const [memberSince, setMemberSince] = useState("");
   const [contactInfo, setContactInfo] = useState({
@@ -32,11 +34,33 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
   });
   const { user } = useSignInContext();
   const { products } = useFetchUserProducts(user?.id);
-
+  const BASE_URL = "https://dewayne-interrepellent-unpertinently.ngrok-free.dev/";
   const onPress = async (prodcutId: any) => {
     router.push("/product-details");
   };
 
+ 
+useEffect(() => {
+  if (!user || !profileImage) return;
+
+  const formData = new FormData();
+  formData.append("UserId", user.id);
+  formData.append("ProfileImage", {
+    uri: profileImage.uri,
+    name: `profile-${user.id}.jpg`,
+    type: "image/jpeg",
+  } as any);
+const sendPhoto = async () => {
+  const imageUrl = await UpdateProfileImage({formData});
+  setImageUrl(imageUrl);
+}
+ 
+sendPhoto();
+}, [profileImage,user]);
+
+
+
+ 
 
   const pickImage = async () => {
     if (!isOwner) return;
@@ -44,9 +68,11 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
+      selectionLimit:1
+      
     });
     if (!result.canceled) {
-      setProfileImage(result.assets[0].uri);
+      setProfileImage(result.assets[0]);
     }
   };
 
@@ -63,8 +89,17 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity onPress={pickImage}>
-            {profileImage ? (
-              <Image source={{ uri: profileImage }} style={styles.profileImage} />
+            {user?.profileImage ? (
+             <Image
+  source={{
+    uri: `${BASE_URL}${imageUrl}`
+      ? `${BASE_URL}${imageUrl}`
+      : user?.profileImage
+        ? `${BASE_URL}${user.profileImage}`
+        : undefined,
+  }}
+  style={styles.profileImage}
+/> 
             ) : (
               <View style={[styles.profileImage, styles.placeholder]}>
                 <Text style={{ color: "#fff" }}>صورة</Text>
@@ -82,7 +117,7 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
             ) : (
               <Text style={styles.name}>{name}</Text>
             )}
-            <Text style={styles.memberSince}>عضو منذ {memberSince}</Text>
+            <Text style={styles.memberSince}>عضو منذ {user?.createdAt}</Text>
           </View>
         </View>
 

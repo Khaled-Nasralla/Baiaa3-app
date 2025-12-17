@@ -16,6 +16,7 @@ export function SignInContextProvider({ children }: { children: ReactNode }) {
         try {
             const response = await signInApi(emailAddress, password);
             setUser(response.data.user);
+            console.log(response.data.user);
             return { success: true };
         } catch (err: any) {
             const message = err.response?.data?.message || "فشل تسجيل الدخول";

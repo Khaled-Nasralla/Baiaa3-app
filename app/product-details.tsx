@@ -1,4 +1,5 @@
 import { useGetProducts } from "@/contexts/get-products-context/get-products-context-provider";
+import { useFetchUser } from "@/hooks/fetch-user";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { RouteProp, useRoute } from "@react-navigation/native";
@@ -52,10 +53,12 @@ export default function ProductDetails() {
   // data
   // ==============================
   const { product } = useGetProducts();
+  const {user} = useFetchUser(product?.userId);
   const route = useRoute<RouteProps>();
   const params = route.params || {};
-  const BASE_URL =
-    "https://dewayne-interrepellent-unpertinently.ngrok-free.dev";
+  const BASE_URL = "https://dewayne-interrepellent-unpertinently.ngrok-free.dev/";
+
+
 
   // ==============================
   // check favorite
@@ -167,22 +170,20 @@ export default function ProductDetails() {
         {/* التفاصيل */}
         <View style={styles.detailsBox}>
           <Text style={styles.productName}>{product?.productName}</Text>
-          <Text style={styles.price}>{product?.price}</Text>
-          <Text style={styles.location}>{product?.province.provinceName}</Text>
-          <Text style={styles.postedTime}>{product?.createdAt}</Text>
-
-          <Text style={styles.sectionTitle}>المنطقة و وصف العنوان</Text>
-          <Text style={styles.description}>{addressDescription}</Text>
-
+          <Text style={styles.price}>{product?.price}ل.س  </Text>
           <Text style={styles.sectionTitle}>الوصف</Text>
           <Text style={styles.description}>{product?.description}</Text>
+          
+          <Text style={styles.sectionTitle}>المنطقة و وصف العنوان</Text>
+          <Text style={styles.location}>{product?.province.provinceName}</Text>
+          <Text style={styles.description}>{product?.addressDescription}</Text>
 
           <Text style={styles.sectionTitle}>التواصل</Text>
 
           <Text style={styles.phone}>
            {product?.contact}
           </Text>
-
+  <Text style={styles.postedTime}>{product?.createdAt}</Text>
           <Text style={styles.views}>{views} مشاهدة</Text>
 
           {/* البائع */}
@@ -195,8 +196,8 @@ export default function ProductDetails() {
                 })
               }
             >
-              {publisherAvatarUri ? (
-                <Image source={{ uri: publisherAvatarUri }} style={styles.avatar} />
+              {user?.profileImage ? (
+                <Image source={{ uri: `${BASE_URL}${user?.profileImage}` }} style={styles.avatar} />
               ) : (
                 <View style={styles.avatarPlaceholder} />
               )}
@@ -204,7 +205,7 @@ export default function ProductDetails() {
 
             <View style={{ flex: 1 }}>
               <View style={styles.sellerHeader}>
-                <Text style={styles.sellerName}>{publisherName}</Text>
+                <Text style={styles.sellerName}>{`${user?.name ?? ""} ${user?.surName ?? ""}`}</Text>
                 <TouchableOpacity
                   onPress={() => setReportModalVisible(true)}
                   style={styles.reportBtn}
@@ -212,7 +213,7 @@ export default function ProductDetails() {
                   <Text style={{ color: "#fff", fontWeight: "bold" }}>⚠️</Text>
                 </TouchableOpacity>
               </View>
-              <Text style={styles.memberSince}>عضو منذ {memberSince}</Text>
+              <Text style={styles.memberSince}>عضو منذ {user?.createdAt}</Text>
             </View>
           </View>
         </View>

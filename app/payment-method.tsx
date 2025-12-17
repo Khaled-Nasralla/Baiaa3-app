@@ -8,7 +8,7 @@ import {
   View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styles } from "./(styles)/payment-method-styles";
+import styles from "./(styles)/payment-method-styles";
 
 export default function PaymentMethods() {
   const [method, setMethod] = useState<string | null>(null);
