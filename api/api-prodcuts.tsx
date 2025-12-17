@@ -1,3 +1,4 @@
+import { ProductPreviewDto } from "@/dtos/product-preview-dto";
 import { Category } from "@/entities/category";
 import { Product } from "@/entities/product";
 import { Province } from "@/entities/province";
@@ -12,7 +13,7 @@ export async function AddProduct({formData} : {formData:FormData}){
 });
 }
 
-export async function GetProducts():Promise<Product[]>{
+export async function GetProducts():Promise<ProductPreviewDto[]>{
     const response = await api.get("/product/products")
     return response.data.data;
 }
@@ -22,7 +23,7 @@ export async function GetProductDetails(productId:string):Promise<Product> {
    return response.data.data;
 }
 
-export async function GetProductsByUserId(userId:string | undefined):Promise<Product[]> {
+export async function GetProductsByUserId(userId:string | undefined):Promise<ProductPreviewDto[]> {
    const response = await api.get(`/product/products/${userId}`)
     return response.data.data;
 }

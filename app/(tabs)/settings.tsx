@@ -56,7 +56,7 @@ export default function SettingsScreen() {
    const handleSignOut = () => {
    
      signOut()
-     router.push("/sign-in-page");
+     router.replace("/sign-in-page");
   
    }
 

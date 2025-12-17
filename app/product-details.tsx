@@ -162,7 +162,7 @@ export default function ProductDetails() {
             <Ionicons
               name={isFavorite ? "heart" : "heart-outline"}
               size={26}
-              color="#fff"
+              color="#ff0000ff"
             />
           </TouchableOpacity>
         </View>

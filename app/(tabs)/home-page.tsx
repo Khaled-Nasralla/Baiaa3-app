@@ -152,12 +152,12 @@ const CATEGORIES = [
 
 export default function HomeScreen() {
   const [selectedCategory, setSelectedCategory] = useState("allProduts");
-  const [prodcutId ,setProdcutId] = useState("");
+  const [prodcutId, setProdcutId] = useState("");
 
-  const {getProductDetails} = useGetProducts();
-  const {products} = useFetchProducts();
+  const { getProductDetails } = useGetProducts();
+  const { products } = useFetchProducts();
 
-  const onPress = async (prodcutId:any) => {
+  const onPress = async (prodcutId: any) => {
     await getProductDetails(prodcutId);
     router.push("/product-details");
   };
@@ -179,7 +179,7 @@ export default function HomeScreen() {
       <Serach />
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={homeStyles.sectionBar}>
-        {CATEGORIES.map((item) =>  (
+        {CATEGORIES.map((item) => (
           <SectionsBar
             key={item.key}
             image={item.image}
@@ -191,16 +191,14 @@ export default function HomeScreen() {
       <ScrollView showsVerticalScrollIndicator={true}>
         <ThemedView style={homeStyles.grid}>
           {products?.map((item) =>
-            item.imageList.length > 0 ? (
-              <Template
-                key={item.productId}
-                onPress={()=>onPress(item.productId)}
-                price={item.price}
-                prodcutName={item.productName}
-                provinceName={item.province.provinceName}
-                imageUrl={item.imageList[0].imageUrl}
-              />
-            ) : null
+            <Template
+              key={item.productId}
+              onPress={() => onPress(item.productId)}
+              price={item.price}
+              prodcutName={item.productName}
+              provinceName={item.productName}
+              imageUrl={item.imageUrl}
+            />
           )}
 
         </ThemedView>

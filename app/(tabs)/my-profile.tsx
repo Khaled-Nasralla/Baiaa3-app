@@ -53,6 +53,7 @@ useEffect(() => {
 const sendPhoto = async () => {
   const imageUrl = await UpdateProfileImage({formData});
   setImageUrl(imageUrl);
+  user.profileImage = imageUrl;
 }
  
 sendPhoto();
@@ -92,11 +93,9 @@ sendPhoto();
             {user?.profileImage ? (
              <Image
   source={{
-    uri: `${BASE_URL}${imageUrl}`
-      ? `${BASE_URL}${imageUrl}`
-      : user?.profileImage
-        ? `${BASE_URL}${user.profileImage}`
-        : undefined,
+    uri:  user?.profileImage
+        ? `${BASE_URL}${user.profileImage}`:`${BASE_URL}${imageUrl}`? `${BASE_URL}${imageUrl}`
+        : profileImage?.uri,
   }}
   style={styles.profileImage}
 /> 
@@ -157,17 +156,15 @@ sendPhoto();
           <Text style={styles.sectionTitle}>منتجاتي</Text>
 
           <View style={styles.grid}>
-            {products?.map((item) =>
-              item.imageList.length > 0 ? (
+            {products?.map((item) => 
                 <Template
                   key={item.productId}
                   onPress={() => onPress(item.productId)}
                   price={item.price}
                   prodcutName={item.productName}
-                  provinceName={item.province.provinceName}
-                  imageUrl={item.imageList[0].imageUrl}
-                />
-              ) : null
+                  provinceName={item.provinceName}
+                  imageUrl={item.imageUrl}
+                />  
             )}
           </View>
         </View>

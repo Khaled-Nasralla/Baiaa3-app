@@ -1,9 +1,9 @@
 import { GetProducts } from "@/api/api-prodcuts";
-import { Product } from "@/entities/product";
+import { ProductPreviewDto } from "@/dtos/product-preview-dto";
 import { useEffect, useState } from "react";
 
 export function useFetchProducts() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductPreviewDto[]>([]);
 
 
   useEffect(() => {
