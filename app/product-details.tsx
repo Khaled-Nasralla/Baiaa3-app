@@ -1,7 +1,8 @@
+import { DeleteLikedProduct, Isliked, LikedProduct } from "@/api/api-fav";
 import { useGetProducts } from "@/contexts/get-products-context/get-products-context-provider";
+import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
 import { useFetchUser } from "@/hooks/fetch-user";
 import { Ionicons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -53,10 +54,11 @@ export default function ProductDetails() {
   // data
   // ==============================
   const { product } = useGetProducts();
-  const {user} = useFetchUser(product?.userId);
+  const {productOwner} = useFetchUser(product?.userId);
+  const {user} = useSignInContext();
   const route = useRoute<RouteProps>();
   const params = route.params || {};
-  const BASE_URL = "https://dewayne-interrepellent-unpertinently.ngrok-free.dev/";
+  const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
 
 
@@ -67,12 +69,7 @@ export default function ProductDetails() {
     const checkFavorite = async () => {
       if (!product) return;
 
-      const stored = await AsyncStorage.getItem("favorites");
-      const favorites = stored ? JSON.parse(stored) : [];
-
-      const exists = favorites.some(
-        (p: any) => p.productId === product.productId
-      );
+      const exists = await Isliked(user?.id,product.productId);
 
       setIsFavorite(exists);
     };
@@ -86,19 +83,15 @@ export default function ProductDetails() {
   const toggleFavorite = async () => {
     if (!product) return;
 
-    const stored = await AsyncStorage.getItem("favorites");
-    let favorites = stored ? JSON.parse(stored) : [];
+    const exists = await Isliked(user?.id,product.productId);
 
-    if (isFavorite) {
-      favorites = favorites.filter(
-        (p: any) => p.productId !== product.productId
-      );
+    if (exists) {
+      await DeleteLikedProduct(user?.id,product.productId);
     } else {
-      favorites.push(product);
+      await LikedProduct(user?.id,product.productId);
     }
 
-    await AsyncStorage.setItem("favorites", JSON.stringify(favorites));
-    setIsFavorite(!isFavorite);
+    setIsFavorite(!exists);
   };
 
   const openImage = (img: any) => {
@@ -196,8 +189,8 @@ export default function ProductDetails() {
                 })
               }
             >
-              {user?.profileImage ? (
-                <Image source={{ uri: `${BASE_URL}${user?.profileImage}` }} style={styles.avatar} />
+              {productOwner?.profileImage ? (
+                <Image source={{ uri: `${BASE_URL}${productOwner?.profileImage}` }} style={styles.avatar} />
               ) : (
                 <View style={styles.avatarPlaceholder} />
               )}
@@ -205,7 +198,7 @@ export default function ProductDetails() {
 
             <View style={{ flex: 1 }}>
               <View style={styles.sellerHeader}>
-                <Text style={styles.sellerName}>{`${user?.name ?? ""} ${user?.surName ?? ""}`}</Text>
+                <Text style={styles.sellerName}>{`${productOwner?.name ?? ""} ${productOwner?.surName ?? ""}`}</Text>
                 <TouchableOpacity
                   onPress={() => setReportModalVisible(true)}
                   style={styles.reportBtn}
@@ -213,7 +206,7 @@ export default function ProductDetails() {
                   <Text style={{ color: "#fff", fontWeight: "bold" }}>⚠️</Text>
                 </TouchableOpacity>
               </View>
-              <Text style={styles.memberSince}>عضو منذ {user?.createdAt}</Text>
+              <Text style={styles.memberSince}>عضو منذ {productOwner?.createdAt}</Text>
             </View>
           </View>
         </View>
