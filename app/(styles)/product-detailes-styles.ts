@@ -63,6 +63,78 @@ favoriteButton: {
   borderRadius: 20,
 },
 
+actionsRow: {
+  flexDirection: "row",
+  marginVertical: 15,
+},
+
+buyButton: {
+  flex: 1,
+  backgroundColor: "#28a745",
+  padding: 14,
+  borderRadius: 10,
+  marginRight: 10,
+  alignItems: "center",
+},
+
+buyButtonText: {
+  color: "#fff",
+  fontWeight: "bold",
+},
+
+bargainButton: {
+  flex: 1,
+  backgroundColor: "#ff9800",
+  padding: 14,
+  borderRadius: 10,
+  alignItems: "center",
+},
+
+bargainButtonText: {
+  color: "#fff",
+  fontWeight: "bold",
+},
+
+
+
+bargainOverlay: {
+  flex: 1,
+  backgroundColor: "rgba(0,0,0,0.5)",
+  justifyContent: "center",
+  alignItems: "center",
+},
+
+bargainContent: {
+  width: "80%",
+  backgroundColor: "#fff",
+  borderRadius: 12,
+  padding: 20,
+  alignItems: "center",
+},
+
+bargainTitle: {
+  fontSize: 18,
+  fontWeight: "bold",
+  marginBottom: 10,
+},
+
+bargainText: {
+  fontSize: 14,
+  color: "#555",
+  marginBottom: 20,
+},
+
+bargainCloseButton: {
+  paddingVertical: 10,
+  paddingHorizontal: 20,
+  backgroundColor: "#ddd",
+  borderRadius: 8,
+},
+
+bargainCloseText: {
+  fontWeight: "bold",
+},
+
 
 });
 

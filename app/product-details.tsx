@@ -12,6 +12,7 @@ import {
   Modal,
   Platform,
   ScrollView,
+  Share,
   StatusBar,
   Text,
   TouchableOpacity,
@@ -19,6 +20,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "./(styles)/product-detailes-styles";
+
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -49,6 +51,9 @@ export default function ProductDetails() {
   const [selectedImage, setSelectedImage] = useState<any>(null);
   const [reportModalVisible, setReportModalVisible] = useState(false);
   const [reportMessage, setReportMessage] = useState("");
+   const [bargainModalVisible, setBargainModalVisible] = useState(false);
+  const [bargainPrice, setBargainPrice] = useState<number | null>(null);
+  
 
   // ==============================
   // data
@@ -59,6 +64,7 @@ export default function ProductDetails() {
   const route = useRoute<RouteProps>();
   const params = route.params || {};
   const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
+  
 
 
 
@@ -99,6 +105,13 @@ export default function ProductDetails() {
     setModalVisible(true);
   };
 
+   const shareProduct = async () => {
+    if (!product) return;
+    await Share.share({
+      message: `شاهد هذا المنتج: ${product.productName} بسعر ${product.price} ل.س`,
+    });
+  };
+
   const handleReport = (type: "post" | "account") => {
     setReportModalVisible(false);
     setReportMessage(
@@ -107,6 +120,18 @@ export default function ProductDetails() {
         : "تم تلقي البلاغ عن الحساب وسيتم التحقق منه ✅"
     );
     setTimeout(() => setReportMessage(""), 3000);
+  };
+
+
+   const basePrice = Number(product?.price || 0);
+  const minPrice = basePrice * 0.9;
+
+  const decreasePrice = () => {
+    setBargainPrice((prev) => {
+      const current = prev ?? basePrice;
+      const next = current - basePrice * 0.1;
+      return next < minPrice ? minPrice : next;
+    });
   };
 
   // ==============================
@@ -124,6 +149,7 @@ export default function ProductDetails() {
 
   const STATUS_BAR_HEIGHT =
     Platform.OS === "android" ? StatusBar.currentHeight || 25 : 0;
+    
 
   // ==============================
   // render
@@ -150,13 +176,19 @@ export default function ProductDetails() {
             ))}
           </ScrollView>
 
-          {/* ❤️ مفضلة */}
-          <TouchableOpacity style={styles.favoriteButton} onPress={toggleFavorite}>
+         <TouchableOpacity style={styles.favoriteButton} onPress={toggleFavorite}>
             <Ionicons
               name={isFavorite ? "heart" : "heart-outline"}
               size={26}
-              color="#ff0000ff"
+              color="#ff0000"
             />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.favoriteButton, { top: 70 }]}
+            onPress={shareProduct}
+          >
+            <Ionicons name="share-social-outline" size={26} />
           </TouchableOpacity>
         </View>
 
@@ -164,6 +196,27 @@ export default function ProductDetails() {
         <View style={styles.detailsBox}>
           <Text style={styles.productName}>{product?.productName}</Text>
           <Text style={styles.price}>{product?.price}ل.س  </Text>
+
+{/* أزرار الشراء والمفاصلة */}
+<View style={styles.actionsRow}>
+  <TouchableOpacity
+    style={styles.buyButton}
+    onPress={() => router.push("/payment-method")}
+  >
+    <Text style={styles.buyButtonText}>شراء</Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity
+    style={styles.bargainButton}
+    onPress={() => {
+      setBargainPrice(Number(product?.price || 0));
+      setBargainModalVisible(true);
+    }}
+  >
+    <Text style={styles.bargainButtonText}>مفاصلة</Text>
+  </TouchableOpacity>
+</View>
+
           <Text style={styles.sectionTitle}>الوصف</Text>
           <Text style={styles.description}>{product?.description}</Text>
           
@@ -176,6 +229,7 @@ export default function ProductDetails() {
           <Text style={styles.phone}>
            {product?.contact}
           </Text>
+
   <Text style={styles.postedTime}>{product?.createdAt}</Text>
           <Text style={styles.views}>{views} مشاهدة</Text>
 
@@ -264,6 +318,31 @@ export default function ProductDetails() {
             <Text style={{ color: "#fff" }}>{reportMessage}</Text>
           </View>
         ) : null}
+
+<Modal
+  visible={bargainModalVisible}
+  transparent
+  animationType="fade"
+>
+  <View style={styles.bargainOverlay}>
+    <View style={styles.bargainContent}>
+      <Text style={styles.bargainTitle}>المفاصلة</Text>
+
+      <Text style={styles.bargainText}>
+        سيتم إضافة المفاصلة لاحقاً
+      </Text>
+
+      <TouchableOpacity
+        style={styles.bargainCloseButton}
+        onPress={() => setBargainModalVisible(false)}
+      >
+        <Text style={styles.bargainCloseText}>إغلاق</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+</Modal>
+
+
       </ScrollView>
     </SafeAreaView>
   );
