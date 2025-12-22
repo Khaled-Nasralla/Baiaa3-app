@@ -1,12 +1,13 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
-import React, { useCallback, useState } from "react";
+import { Template } from "@/components/ui/template";
+import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
+import { useFetchLikedProducts } from "@/hooks/fetch-Liked-products";
+import { router } from "expo-router";
+import React from "react";
 import {
   Dimensions,
-  Image,
   ScrollView,
   Text,
-  View,
+  View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import myFavstyles from "../(styles)/my-favorites-styles";
@@ -14,20 +15,13 @@ import myFavstyles from "../(styles)/my-favorites-styles";
 const screenWidth = Dimensions.get("window").width;
 
 export default function MyFavorites() {
-  const [favorites, setFavorites] = useState<any[]>([]);
 
-  // 🔹 تحميل المفضلة عند فتح الصفحة
-  useFocusEffect(
-    useCallback(() => {
-      const loadFavorites = async () => {
-        const stored = await AsyncStorage.getItem("favorites");
-        const list = stored ? JSON.parse(stored) : [];
-        setFavorites(list);
-      };
-
-      loadFavorites();
-    }, [])
-  );
+  const { user } = useSignInContext();
+  const { likedProducts } = useFetchLikedProducts(user?.id);
+  const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
+  const onPress = async (prodcutId: any) => {
+    router.push("/product-details");
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -36,23 +30,21 @@ export default function MyFavorites() {
         <Text style={myFavstyles.title}>المفضلة</Text>
 
         {/* المحتوى */}
-        {favorites.length === 0 ? (
+        {likedProducts.length === 0 ? (
           <Text style={{ textAlign: "center", marginTop: 40 }}>
             لا يوجد منتجات في المفضلة
           </Text>
         ) : (
           <View style={myFavstyles.grid}>
-            {favorites.map((item, index) => (
-              <View key={item.productId ?? index} style={myFavstyles.card}>
-                {item.imageList?.[0]?.imageUrl && (
-                  <Image
-                    source={{ uri: item.imageList[0].imageUrl }}
-                    style={myFavstyles.image}
-                  />
-                )}
-                <Text style={myFavstyles.name}>{item.productName}</Text>
-                <Text style={myFavstyles.price}>{item.price}</Text>
-              </View>
+            {likedProducts.map((item, index) => (
+              <Template
+                key={item.productId}
+                onPress={() => onPress(item.productId)}
+                price={item.price}
+                prodcutName={item.productName}
+                provinceName={item.provinceName}
+                imageUrl={item.imageUrl}
+              />
             ))}
           </View>
         )}

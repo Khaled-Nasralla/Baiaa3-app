@@ -14,17 +14,17 @@ export async function AddProduct({formData} : {formData:FormData}){
 }
 
 export async function GetProducts():Promise<ProductPreviewDto[]>{
-    const response = await api.get("/product/products")
+    const response = await api.get("/product/products");
     return response.data.data;
 }
 
 export async function GetProductDetails(productId:string):Promise<Product> {
-   const response = await api.get(`/product/details/${productId}`)
+   const response = await api.get(`/product/details/${productId}`);
    return response.data.data;
 }
 
 export async function GetProductsByUserId(userId:string | undefined):Promise<ProductPreviewDto[]> {
-   const response = await api.get(`/product/products/${userId}`)
+   const response = await api.get(`/product/products/${userId}`);
     return response.data.data;
 }
 

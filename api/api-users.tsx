@@ -19,7 +19,7 @@ export async function signInApi( emailAddress:string | null, password : string|n
 
 
 export async function GetUserById(userId:string): Promise<User> {
-  const response = await api.get(`users/${userId}`);
+  const response = await api.get(`/users/${userId}`);
     console.log(response.data.data);
   return response.data.data;
 }

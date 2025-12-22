@@ -34,7 +34,7 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
   });
   const { user } = useSignInContext();
   const { products } = useFetchUserProducts(user?.id);
-  const BASE_URL = "https://dewayne-interrepellent-unpertinently.ngrok-free.dev/";
+  const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
   const onPress = async (prodcutId: any) => {
     router.push("/product-details");
   };

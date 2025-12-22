@@ -21,8 +21,9 @@ export default function SignInPage() {
 
 
   const handleSignInPress = async () => {
+   console.log("SIGN IN BUTTON PRESSED", { emailAddress, password });
   const result = await signIn(emailAddress, password);
-
+  console.log("SIGN IN RESULT", result);
   if (!result.success) {
     alert(result.message);
     return;

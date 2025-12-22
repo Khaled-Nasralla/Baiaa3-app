@@ -1,11 +1,10 @@
 import axios from "axios";
-const API_URL = "https://dewayne-interrepellent-unpertinently.ngrok-free.dev/api";
 
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
+
+console.log("APP STARTED");
+console.log("API_URL =", API_URL);
 
 export const api = axios.create({
-  baseURL: API_URL,
+  baseURL: API_URL
 });
-
-
-
-

@@ -11,7 +11,7 @@ type TemplateProps = {
 };
 
 export function Template({ onPress, prodcutName, price, provinceName, imageUrl }: TemplateProps) {
-  const BASE_URL = "https://dewayne-interrepellent-unpertinently.ngrok-free.dev";
+  const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
   const fullImageUrl = `${BASE_URL}${imageUrl}`;
 
