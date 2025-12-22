@@ -196,7 +196,7 @@ export default function HomeScreen() {
               onPress={() => onPress(item.productId)}
               price={item.price}
               prodcutName={item.productName}
-              provinceName={item.productName}
+              provinceName={item.provinceName}
               imageUrl={item.imageUrl}
             />
           )}

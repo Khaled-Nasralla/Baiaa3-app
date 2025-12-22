@@ -16,11 +16,12 @@ export function useFetchProducts() {
 
   useFocusEffect(
     useCallback(() => {
-     
-        queryClient.invalidateQueries({
-          queryKey: ["get-products"]}
-     ) }, [])
+      queryClient.invalidateQueries({
+        queryKey: ["get-products"]
+      }
+      )
+    }, [])
   );
 
-  return { products };
+  return {products};
 }

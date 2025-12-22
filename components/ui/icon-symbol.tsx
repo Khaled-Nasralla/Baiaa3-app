@@ -21,7 +21,7 @@ const MAPPING = {
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
   'line.3.horizontal.decrease': 'filter-list',
-  "person.fill.badge.minus": "supervised-user-circle"
+  "person.fill.badge.minus": "supervised-user-circle",
 } as unknown as IconMapping;
 
 

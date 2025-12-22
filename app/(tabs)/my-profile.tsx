@@ -27,13 +27,12 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
   const [profileImage, setProfileImage] = useState<{ uri: string }>();
     const [imageUrl, setImageUrl] = useState<string|null>(null);
   const [name, setName] = useState("");
-  const [memberSince, setMemberSince] = useState("");
   const [contactInfo, setContactInfo] = useState({
     email: "example@email.com",
     phone: "00963123456789",
   });
   const { user } = useSignInContext();
-  const { products } = useFetchUserProducts(user?.id);
+  const { products } = useFetchUserProducts();
   const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
   const onPress = async (prodcutId: any) => {
     router.push("/product-details");
