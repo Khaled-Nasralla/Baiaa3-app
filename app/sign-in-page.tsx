@@ -3,6 +3,7 @@ import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-pro
 import { router } from "expo-router";
 import { useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   ImageBackground,
   Text,
@@ -32,7 +33,7 @@ export default function SignInPage() {
   router.replace("/(tabs)/home-page");
 };
 
-
+if(loading) return <ActivityIndicator/>
   return (
 
     <ImageBackground

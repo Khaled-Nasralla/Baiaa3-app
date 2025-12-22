@@ -4,7 +4,6 @@ import { useFetchLikedProducts } from "@/hooks/fetch-Liked-products";
 import { router } from "expo-router";
 import React from "react";
 import {
-  Dimensions,
   ScrollView,
   Text,
   View
@@ -12,7 +11,6 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import myFavstyles from "../(styles)/my-favorites-styles";
 
-const screenWidth = Dimensions.get("window").width;
 
 export default function MyFavorites() {
 
