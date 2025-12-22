@@ -190,7 +190,7 @@ export default function HomeScreen() {
 
       <ScrollView showsVerticalScrollIndicator={true}>
         <ThemedView style={homeStyles.grid}>
-          {products?.map((item) =>
+          {products.data?.map((item) =>
             <Template
               key={item.productId}
               onPress={() => onPress(item.productId)}

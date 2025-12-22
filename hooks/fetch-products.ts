@@ -1,21 +1,26 @@
 import { GetProducts } from "@/api/api-prodcuts";
-import { ProductPreviewDto } from "@/dtos/product-preview-dto";
-import { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useFocusEffect } from "expo-router";
+import { useCallback } from "react";
 
 export function useFetchProducts() {
-  const [products, setProducts] = useState<ProductPreviewDto[]>([]);
 
 
-  useEffect(() => {
+  const queryClient = useQueryClient();
+
+  const products = useQuery({
+    queryKey: ["get-products"],
+    queryFn: () => GetProducts(),
+    staleTime: 1000 * 60 * 5,
+  });
+
+  useFocusEffect(
+    useCallback(() => {
      
-    const fetchProducts = async () => { 
-    
-        const data = await GetProducts(); // API call
-        setProducts(data);
-    };
-
-    fetchProducts();
-  }, []); // ✅ run once
+        queryClient.invalidateQueries({
+          queryKey: ["get-products"]}
+     ) }, [])
+  );
 
   return { products };
 }
