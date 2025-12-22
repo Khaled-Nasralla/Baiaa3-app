@@ -28,13 +28,13 @@ export default function MyFavorites() {
         <Text style={myFavstyles.title}>المفضلة</Text>
 
         {/* المحتوى */}
-        {likedProducts.length === 0 ? (
+        {likedProducts.data?.length === 0 ? (
           <Text style={{ textAlign: "center", marginTop: 40 }}>
             لا يوجد منتجات في المفضلة
           </Text>
         ) : (
           <View style={myFavstyles.grid}>
-            {likedProducts.map((item, index) => (
+            {likedProducts.data?.map((item, index) => (
               <Template
                 key={item.productId}
                 onPress={() => onPress(item.productId)}

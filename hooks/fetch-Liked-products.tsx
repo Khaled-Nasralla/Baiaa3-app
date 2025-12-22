@@ -1,24 +1,29 @@
-import { GetLikedProduects } from "@/api/api-fav";
-import { ProductPreviewDto } from "@/dtos/product-preview-dto";
+import { GetLikedProduects as GetLikedProducts } from "@/api/api-fav";
 import { useFocusEffect } from "@react-navigation/native";
-import { useCallback, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useCallback } from "react";
 
 export function useFetchLikedProducts(userId?: string) {
-  const [likedProducts, setLikedProducts] =
-    useState<ProductPreviewDto[]>([]);
+
+const queryClient = useQueryClient();
+
+  const likedProducts = useQuery({
+    queryKey: ["liked-products", userId],
+    queryFn: () => GetLikedProducts(userId!),
+    enabled: !!userId,
+    staleTime: 1000 * 60 * 5,
+  });
+
 
   useFocusEffect(
     useCallback(() => {
-      if (!userId) return;
-
-      const fetchLikedProducts = async () => {
-        const data = await GetLikedProduects(userId);
-        setLikedProducts(data);
-      };
-
-      fetchLikedProducts();
+      if (userId) {
+        queryClient.invalidateQueries({
+          queryKey: ["liked-products", userId],
+        });
+      }
     }, [userId])
   );
 
-  return { likedProducts };
+  return {likedProducts};
 }
