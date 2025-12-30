@@ -7,23 +7,27 @@ import { SignInContextProvider } from '@/contexts/sign-in-context/sign-in-contex
 import { SignUpContextProvider } from '@/contexts/sign-up-context/sign-up-context-provider';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Provider as PaperProvider } from "react-native-paper";
+
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const queryClient = new QueryClient();
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <QueryClientProvider client={queryClient}>
-        <SignUpContextProvider>
-          <SignInContextProvider>
-            <GetProductsProvider>
-              <Stack screenOptions={{
-                headerShown: false,
-                animation: "fade"
-              }}>
-              </Stack>
-            </GetProductsProvider>
-          </SignInContextProvider>
-        </SignUpContextProvider>
+        <PaperProvider>
+          <SignUpContextProvider>
+            <SignInContextProvider>
+              <GetProductsProvider>
+                <Stack screenOptions={{
+                  headerShown: false,
+                  animation: "fade"
+                }}>
+                </Stack>
+              </GetProductsProvider>
+            </SignInContextProvider>
+          </SignUpContextProvider>
+        </PaperProvider>
       </QueryClientProvider>
     </ThemeProvider>
   );

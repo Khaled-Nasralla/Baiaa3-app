@@ -1,4 +1,5 @@
-import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+import { SimpleLineIcons } from '@expo/vector-icons';
+import { useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { ThemedText } from "../themed-text";
 import { ThemedView } from "../themed-view";
@@ -14,7 +15,7 @@ export function Template({ onPress, prodcutName, price, provinceName, imageUrl }
   const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
   const fullImageUrl = `${BASE_URL}${imageUrl}`;
-
+  const [visible, setVisible] = useState(false);
   return (
     <ThemedView style={styles.card}>
       <TouchableOpacity onPress={onPress}>
@@ -22,20 +23,25 @@ export function Template({ onPress, prodcutName, price, provinceName, imageUrl }
           source={{ uri: fullImageUrl }}
           style={styles.image}
         />
-        <ThemedView style={styles.cardDetails}>
-          <ThemedView style={styles.textPostion}>
-            <ThemedText style={styles.text}>اسم المنتج: {prodcutName}</ThemedText>
-            <ThemedText style={styles.text}>السعر: {price}</ThemedText>
-            <ThemedText style={styles.text}>المكان: {provinceName}</ThemedText>
-          </ThemedView>
-          <ThemedView >
-          <TouchableOpacity style={styles.options}>
-           <SimpleLineIcons name="options-vertical" size={15} color="black" /> 
-          </TouchableOpacity>
-
-          </ThemedView>
-        </ThemedView>
       </TouchableOpacity>
+      <ThemedView style={styles.cardDetails}>
+        <ThemedView style={styles.textPostion}>
+          <ThemedText style={styles.text}>{prodcutName}</ThemedText>
+          <ThemedText style={styles.text}>{price} ليرة سورية</ThemedText>
+          <ThemedText style={styles.text}>{provinceName}</ThemedText>
+        </ThemedView>
+        <ThemedView >
+          <ThemedView style={styles.options}>
+          
+                <TouchableOpacity onPress={() => setVisible(true)}>
+                  <SimpleLineIcons name="options-vertical" size={24} color="black" />
+                </TouchableOpacity>
+     
+          </ThemedView>
+
+        </ThemedView>
+      </ThemedView>
+
 
     </ThemedView>
   );
@@ -67,7 +73,7 @@ const styles = StyleSheet.create({
     color: "black",
 
   },
-cardDetails: {
+  cardDetails: {
     flexDirection: "row-reverse",
     justifyContent: "space-between",
     height: 90,                 // 👈 important: gives vertical space

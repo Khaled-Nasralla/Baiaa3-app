@@ -140,11 +140,6 @@ export default function ProductDetails() {
   const {
     views = 0,
     publisherId = "1",
-    publisherName = "غير معروف",
-    publisherAvatarUri = null,
-    memberSince = "2024",
-    addressDescription = "لم يتم إضافة وصف العنوان",
-    phoneNumber = "غير متوفر",
   } = params;
 
   const STATUS_BAR_HEIGHT =

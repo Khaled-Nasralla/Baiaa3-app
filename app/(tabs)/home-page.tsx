@@ -152,7 +152,6 @@ const CATEGORIES = [
 
 export default function HomeScreen() {
   const [selectedCategory, setSelectedCategory] = useState("allProduts");
-  const [prodcutId, setProdcutId] = useState("");
 
   const { getProductDetails } = useGetProducts();
   const { products } = useFetchProducts();
@@ -200,7 +199,6 @@ export default function HomeScreen() {
               imageUrl={item.imageUrl}
             />
           )}
-
         </ThemedView>
       </ScrollView>
       <FloatingButton />
