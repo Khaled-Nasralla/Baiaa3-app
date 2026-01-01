@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 
- const styles = StyleSheet.create({
-
+const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,
     paddingBottom: 40, // مساحة أسفل الصفحة
@@ -88,6 +87,51 @@ import { StyleSheet } from "react-native";
     justifyContent: "space-between",
   },
 
+  /* ===== زر المفاصلة الاحترافي ===== */
+  bargainButton: {
+    marginTop: 18,
+    marginBottom: 12,
+    backgroundColor: "#0A2540",
+    borderRadius: 18,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    justifyContent: "flex-start", // يجعل النص بجانب الأيقونة بشكل احترافي
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+
+  bargainIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#1F3A5F",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 12,
+  },
+
+  bargainTextContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
+
+  bargainButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+
+  bargainButtonSub: {
+    color: "#BFD7ED",
+    fontSize: 12,
+    fontWeight: "500",
+    marginTop: 2,
+  },
 });
 
 export default styles;

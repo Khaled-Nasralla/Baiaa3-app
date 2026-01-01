@@ -21,11 +21,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../(styles)/my-profile-styles";
 
 type ProfileProps = {
-  isOwner?: boolean; // true إذا هذا هو البروفايل الخاص بك
+  isOwner?: boolean;
 };
 
 export default function ProfileScreen({ isOwner = true }: ProfileProps) {
-
   const [profileImage, setProfileImage] = useState<{ uri: string }>();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
@@ -35,13 +34,18 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
     email: "example@email.com",
     phone: "00963123456789",
   });
+
   const { user } = useSignInContext();
   const { products } = useFetchUserProducts();
   const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
-  const onPress = async (prodcutId: any) => {
+
+  const onPressProduct = (productId: any) => {
     router.push("/product-details");
   };
 
+  /* ===== رفع صورة البروفايل ===== */
+  useEffect(() => {
+    if (!user || !profileImage) return;
   useFocusEffect(
     useCallback(() => {
       setPage(Pages.MyProfile);
@@ -51,6 +55,22 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
   useEffect(() => {
     if (!user || !profileImage) return;
 
+    const formData = new FormData();
+    formData.append("UserId", user.id);
+    formData.append("ProfileImage", {
+      uri: profileImage.uri,
+      name: `profile-${user.id}.jpg`,
+      type: "image/jpeg",
+    } as any);
+
+    const sendPhoto = async () => {
+      const imageUrl = await UpdateProfileImage({ formData });
+      setImageUrl(imageUrl);
+      user.profileImage = imageUrl;
+    };
+
+    sendPhoto();
+  }, [profileImage, user]);
     const formData = new FormData();
     formData.append("UserId", user.id);
     formData.append("ProfileImage", {
@@ -68,9 +88,6 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
   }, [profileImage, user]);
 
 
-
-
-
   const pickImage = async () => {
     if (!isOwner) return;
 
@@ -80,22 +97,29 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
       selectionLimit: 1
 
     });
+
     if (!result.canceled) {
       setProfileImage(result.assets[0]);
     }
   };
 
-  const STATUS_BAR_HEIGHT = Platform.OS === "android" ? StatusBar.currentHeight || 25 : 0;
+  const STATUS_BAR_HEIGHT =
+    Platform.OS === "android" ? StatusBar.currentHeight || 25 : 0;
+
+  // عدد المفاصلات الواردة والصادرة (يمكن جلبه من API لاحقًا)
+  const incomingCount = 3;
+  const outgoingCount = 1;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView
-        contentContainerStyle={[styles.container, { paddingTop: STATUS_BAR_HEIGHT + 10 }]}
-        showsVerticalScrollIndicator={true}
-        bounces={true}
+        contentContainerStyle={[
+          styles.container,
+          { paddingTop: STATUS_BAR_HEIGHT + 10 },
+        ]}
+        showsVerticalScrollIndicator
       >
-
-        {/* Header */}
+        {/* ===== Header ===== */}
         <View style={styles.header}>
           <TouchableOpacity onPress={pickImage}>
             {user?.profileImage ? (
@@ -124,11 +148,35 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
             ) : (
               <Text style={styles.name}>{name}</Text>
             )}
-            <Text style={styles.memberSince}>عضو منذ {user?.createdAt}</Text>
+            <Text style={styles.memberSince}>
+              عضو منذ {user?.createdAt}
+            </Text>
           </View>
         </View>
 
-        {/* Contact */}
+        {/* ===== زر المفاصلة الاحترافي ===== */}
+        {isOwner && (
+          <TouchableOpacity
+            style={styles.bargainButton}
+            activeOpacity={0.85}
+            onPress={() => router.push("/")}
+          >
+            {/* أيقونة */}
+            <View style={styles.bargainIcon}>
+              <Text style={{ color: "#fff", fontWeight: "700" }}>💬</Text>
+            </View>
+
+            {/* نص وعداد */}
+            <View style={styles.bargainTextContainer}>
+              <Text style={styles.bargainButtonText}>المفاصلة</Text>
+              <Text style={styles.bargainButtonSub}>
+                {incomingCount} وارد • {outgoingCount} صادر
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
+
+        {/* ===== Contact ===== */}
         <View style={styles.contactSection}>
           <Text style={styles.sectionTitle}>تفاصيل الاتصال</Text>
 
@@ -137,29 +185,27 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
               <TextInput
                 style={styles.contactInput}
                 value={user?.emailAddress}
-                onChangeText={(text) =>
-                  setContactInfo({ ...contactInfo, email: text })
-                }
                 placeholder="البريد الإلكتروني"
               />
               <TextInput
                 style={styles.contactInput}
                 value={contactInfo.phone}
-                onChangeText={(text) =>
-                  setContactInfo({ ...contactInfo, phone: text })
-                }
                 placeholder="رقم الهاتف"
               />
             </>
           ) : (
             <>
-              <Text style={styles.contactText}>البريد الإلكتروني: {contactInfo.email}</Text>
-              <Text style={styles.contactText}>رقم الهاتف: {contactInfo.phone}</Text>
+              <Text style={styles.contactText}>
+                البريد الإلكتروني: {contactInfo.email}
+              </Text>
+              <Text style={styles.contactText}>
+                رقم الهاتف: {contactInfo.phone}
+              </Text>
             </>
           )}
         </View>
 
-        {/* Products */}
+        {/* ===== Products ===== */}
         <View style={styles.productsSection}>
           <Text style={styles.sectionTitle}>منتجاتي</Text>
 
@@ -170,7 +216,7 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
                 id={item.productId}
                 openMenuId={openMenuId}
                 setOpenMenuId={setOpenMenuId}
-                onPress={() => onPress(item.productId)}
+                onPress={() => onPressProduct(item.productId)}
                 price={item.price}
                 prodcutName={item.productName}
                 provinceName={item.provinceName}
@@ -179,10 +225,7 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
             )}
           </View>
         </View>
-
       </ScrollView>
     </SafeAreaView>
   );
 }
-
-
