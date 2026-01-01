@@ -1,4 +1,4 @@
-export enum ProductModalsOptions{
-    MyProfileModal,
-    HomePageModal
+export enum Pages{
+    MyProfile,
+    HomePage
 }

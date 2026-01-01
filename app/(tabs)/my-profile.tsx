@@ -1,10 +1,12 @@
 import { UpdateProfileImage } from "@/api/api-users";
 import { Template } from "@/components/ui/template";
+import { usePagesContext } from "@/contexts/pages-context/pages-context-provider";
 import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
+import { Pages } from "@/enums/product-modals-options-enum";
 import { useFetchUserProducts } from "@/hooks/fetch-user-products";
 import * as ImagePicker from "expo-image-picker";
-import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Image,
   Platform,
@@ -25,8 +27,10 @@ type ProfileProps = {
 export default function ProfileScreen({ isOwner = true }: ProfileProps) {
 
   const [profileImage, setProfileImage] = useState<{ uri: string }>();
-    const [imageUrl, setImageUrl] = useState<string|null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [name, setName] = useState("");
+  const { setPage } = usePagesContext();
   const [contactInfo, setContactInfo] = useState({
     email: "example@email.com",
     phone: "00963123456789",
@@ -38,29 +42,34 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
     router.push("/product-details");
   };
 
- 
-useEffect(() => {
-  if (!user || !profileImage) return;
+  useFocusEffect(
+    useCallback(() => {
+      setPage(Pages.MyProfile);
+    }, [])
+  );
 
-  const formData = new FormData();
-  formData.append("UserId", user.id);
-  formData.append("ProfileImage", {
-    uri: profileImage.uri,
-    name: `profile-${user.id}.jpg`,
-    type: "image/jpeg",
-  } as any);
-const sendPhoto = async () => {
-  const imageUrl = await UpdateProfileImage({formData});
-  setImageUrl(imageUrl);
-  user.profileImage = imageUrl;
-}
- 
-sendPhoto();
-}, [profileImage,user]);
+  useEffect(() => {
+    if (!user || !profileImage) return;
+
+    const formData = new FormData();
+    formData.append("UserId", user.id);
+    formData.append("ProfileImage", {
+      uri: profileImage.uri,
+      name: `profile-${user.id}.jpg`,
+      type: "image/jpeg",
+    } as any);
+    const sendPhoto = async () => {
+      const imageUrl = await UpdateProfileImage({ formData });
+      setImageUrl(imageUrl);
+      user.profileImage = imageUrl;
+    }
+
+    sendPhoto();
+  }, [profileImage, user]);
 
 
 
- 
+
 
   const pickImage = async () => {
     if (!isOwner) return;
@@ -68,8 +77,8 @@ sendPhoto();
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
-      selectionLimit:1
-      
+      selectionLimit: 1
+
     });
     if (!result.canceled) {
       setProfileImage(result.assets[0]);
@@ -90,14 +99,14 @@ sendPhoto();
         <View style={styles.header}>
           <TouchableOpacity onPress={pickImage}>
             {user?.profileImage ? (
-             <Image
-  source={{
-    uri:  user?.profileImage
-        ? `${BASE_URL}${user.profileImage}`:`${BASE_URL}${imageUrl}`? `${BASE_URL}${imageUrl}`
-        : profileImage?.uri,
-  }}
-  style={styles.profileImage}
-/> 
+              <Image
+                source={{
+                  uri: user?.profileImage
+                    ? `${BASE_URL}${user.profileImage}` : `${BASE_URL}${imageUrl}` ? `${BASE_URL}${imageUrl}`
+                      : profileImage?.uri,
+                }}
+                style={styles.profileImage}
+              />
             ) : (
               <View style={[styles.profileImage, styles.placeholder]}>
                 <Text style={{ color: "#fff" }}>صورة</Text>
@@ -155,15 +164,18 @@ sendPhoto();
           <Text style={styles.sectionTitle}>منتجاتي</Text>
 
           <View style={styles.grid}>
-            {products?.map((item) => 
-                <Template
-                  key={item.productId}
-                  onPress={() => onPress(item.productId)}
-                  price={item.price}
-                  prodcutName={item.productName}
-                  provinceName={item.provinceName}
-                  imageUrl={item.imageUrl}
-                />  
+            {products?.map((item) =>
+              <Template
+                key={item.productId}
+                id={item.productId}
+                openMenuId={openMenuId}
+                setOpenMenuId={setOpenMenuId}
+                onPress={() => onPress(item.productId)}
+                price={item.price}
+                prodcutName={item.productName}
+                provinceName={item.provinceName}
+                imageUrl={item.imageUrl}
+              />
             )}
           </View>
         </View>

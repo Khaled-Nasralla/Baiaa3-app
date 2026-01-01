@@ -5,9 +5,12 @@ import { SectionsBar } from "@/components/ui/sections-bar";
 import { Template } from "@/components/ui/template";
 import { images } from "@/constants/images";
 import { useGetProducts } from "@/contexts/get-products-context/get-products-context-provider";
+import { usePagesContext } from "@/contexts/pages-context/pages-context-provider";
+import { Pages } from "@/enums/product-modals-options-enum";
 import { useFetchProducts } from "@/hooks/fetch-products";
+import { useFocusEffect } from "@react-navigation/native";
 import { router } from "expo-router";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import homeStyles from "../(styles)/home-page-styles";
@@ -152,9 +155,10 @@ const CATEGORIES = [
 
 export default function HomeScreen() {
   const [selectedCategory, setSelectedCategory] = useState("allProduts");
-
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const { getProductDetails } = useGetProducts();
   const { products } = useFetchProducts();
+  const { setPage } = usePagesContext();
 
   const onPress = async (prodcutId: any) => {
     await getProductDetails(prodcutId);
@@ -173,6 +177,11 @@ export default function HomeScreen() {
     );
   }, [selectedCategory]);
 
+  useFocusEffect(
+    useCallback(() => {
+      setPage(Pages.HomePage);
+    }, [])
+  );
   return (
     <SafeAreaView style={homeStyles.container}>
       <Serach />
@@ -192,6 +201,9 @@ export default function HomeScreen() {
           {products.data?.map((item) =>
             <Template
               key={item.productId}
+              id={item.productId}
+              openMenuId={openMenuId}
+              setOpenMenuId={setOpenMenuId}
               onPress={() => onPress(item.productId)}
               price={item.price}
               prodcutName={item.productName}

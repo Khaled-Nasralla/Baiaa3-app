@@ -1,51 +1,94 @@
-import { SimpleLineIcons } from '@expo/vector-icons';
-import { useState } from 'react';
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { SimpleLineIcons } from "@expo/vector-icons";
+import { useEffect, useRef } from "react";
+import { Animated, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { ThemedText } from "../themed-text";
 import { ThemedView } from "../themed-view";
+import { OptionMenu } from "./menu";
+
 type TemplateProps = {
+  id: string;
+  openMenuId: string | null;
+  setOpenMenuId: (id: string | null) => void;
   onPress: () => void;
-  prodcutName: string | null,
-  price: string | null,
-  provinceName: string | null,
-  imageUrl: string | null
+  prodcutName: string | null;
+  price: string | null;
+  provinceName: string | null;
+  imageUrl: string | null;
 };
 
-export function Template({ onPress, prodcutName, price, provinceName, imageUrl }: TemplateProps) {
+export function Template({
+  id,
+  openMenuId,
+  setOpenMenuId,
+  onPress,
+  prodcutName,
+  price,
+  provinceName,
+  imageUrl,
+}: TemplateProps) {
   const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
-
   const fullImageUrl = `${BASE_URL}${imageUrl}`;
-  const [visible, setVisible] = useState(false);
+
+  const slideAnim = useRef(new Animated.Value(0)).current;
+  const isVisible = openMenuId === id;
+
+  useEffect(() => {
+    Animated.timing(slideAnim, {
+      toValue: isVisible ? 1 : 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  }, [isVisible]);
+
   return (
     <ThemedView style={styles.card}>
       <TouchableOpacity onPress={onPress}>
-        <Image
-          source={{ uri: fullImageUrl }}
-          style={styles.image}
-        />
+        <Image source={{ uri: fullImageUrl }} style={styles.image} />
       </TouchableOpacity>
+
       <ThemedView style={styles.cardDetails}>
         <ThemedView style={styles.textPostion}>
           <ThemedText style={styles.text}>{prodcutName}</ThemedText>
           <ThemedText style={styles.text}>{price} ليرة سورية</ThemedText>
           <ThemedText style={styles.text}>{provinceName}</ThemedText>
         </ThemedView>
-        <ThemedView >
-          <ThemedView style={styles.options}>
-          
-                <TouchableOpacity onPress={() => setVisible(true)}>
-                  <SimpleLineIcons name="options-vertical" size={24} color="black" />
-                </TouchableOpacity>
-     
-          </ThemedView>
 
+        <ThemedView style={styles.options}>
+          <TouchableOpacity
+           
+            onPress={() =>
+              setOpenMenuId(isVisible ? null : id)
+            }
+          >
+            <SimpleLineIcons name="options-vertical" size={24} color="black" />
+          </TouchableOpacity>
+
+          {isVisible && (
+            <Animated.View
+              style={[
+                styles.menu,
+                {
+                  opacity: slideAnim,
+                  transform: [
+                    {
+                      translateY: slideAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [40, 0],
+                      }),
+                    },
+                  ],
+                },
+              ]}
+            >
+              <OptionMenu />
+            </Animated.View>
+          )}
         </ThemedView>
       </ThemedView>
-
-
     </ThemedView>
   );
 }
+
 
 const styles = StyleSheet.create({
   card: {
@@ -55,9 +98,6 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 12,
     elevation: 3,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
   },
 
   image: {
@@ -71,23 +111,36 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 3,
     color: "black",
-
   },
+
   cardDetails: {
     flexDirection: "row-reverse",
     justifyContent: "space-between",
-    height: 90,                 // 👈 important: gives vertical space
+    height: 90,
   },
 
   textPostion: {
-    alignItems: "flex-end",     // right aligned text
-    justifyContent: "flex-start",
+    alignItems: "flex-end",
     flex: 1,
   },
 
   options: {
-    alignItems: "flex-start",   // left aligned
-    justifyContent: "flex-end", // 👈 push to bottom
+    alignItems: "flex-start",
+    justifyContent: "flex-end",
     flex: 1,
+    position: "relative",
+  },
+
+  menu: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 8,
+    elevation: 6,
+    zIndex: 100,
+    minWidth: 120,
   },
 });
+

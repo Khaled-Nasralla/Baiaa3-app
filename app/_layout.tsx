@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 import 'react-native-reanimated';
 
 import { GetProductsProvider } from '@/contexts/get-products-context/get-products-context-provider';
+import { PagesContextProvider } from '@/contexts/pages-context/pages-context-provider';
 import { SignInContextProvider } from '@/contexts/sign-in-context/sign-in-context-provider';
 import { SignUpContextProvider } from '@/contexts/sign-up-context/sign-up-context-provider';
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -18,13 +19,15 @@ export default function RootLayout() {
         <PaperProvider>
           <SignUpContextProvider>
             <SignInContextProvider>
+              <PagesContextProvider> 
               <GetProductsProvider>
                 <Stack screenOptions={{
                   headerShown: false,
                   animation: "fade"
                 }}>
                 </Stack>
-              </GetProductsProvider>
+              </GetProductsProvider> 
+              </PagesContextProvider>
             </SignInContextProvider>
           </SignUpContextProvider>
         </PaperProvider>

@@ -2,7 +2,7 @@ import { Template } from "@/components/ui/template";
 import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
 import { useFetchLikedProducts } from "@/hooks/fetch-Liked-products";
 import { router } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import {
   ScrollView,
   Text,
@@ -17,6 +17,7 @@ export default function MyFavorites() {
   const { user } = useSignInContext();
   const { likedProducts } = useFetchLikedProducts(user?.id);
   const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const onPress = async (prodcutId: any) => {
     router.push("/product-details");
   };
@@ -37,6 +38,9 @@ export default function MyFavorites() {
             {likedProducts.data?.map((item, index) => (
               <Template
                 key={item.productId}
+                id={item.productId}
+                openMenuId={openMenuId}
+                setOpenMenuId={setOpenMenuId}
                 onPress={() => onPress(item.productId)}
                 price={item.price}
                 prodcutName={item.productName}
