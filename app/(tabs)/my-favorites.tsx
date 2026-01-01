@@ -47,7 +47,7 @@ export default function MyFavorites() {
                 productName={item.productName}
                 provinceName={item.provinceName}
                 imageUrl={item.imageUrl}
-                productUserId={user?.id!}
+                productUserId={item.userId}
               />
             ))}
           </View>

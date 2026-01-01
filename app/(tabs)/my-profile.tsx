@@ -221,7 +221,7 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
                 productName={item.productName}
                 provinceName={item.provinceName}
                 imageUrl={item.imageUrl}
-                productUserId={user?.id!}
+                productUserId={item.userId}
               />
             )}
           </View>

@@ -17,12 +17,7 @@ type TemplateProps = {
   productUserId: string;
 };
 
-export function Template({
-  id,
-  openMenuId,
-  setOpenMenuId,
-  onPress,
-  productName: prodcutName,
+export function Template({id, openMenuId, setOpenMenuId, onPress, productName,
   price,
   provinceName,
   imageUrl,
@@ -50,17 +45,14 @@ export function Template({
 
       <ThemedView style={styles.cardDetails}>
         <ThemedView style={styles.textPostion}>
-          <ThemedText style={styles.text}>{prodcutName}</ThemedText>
+          <ThemedText style={styles.text}>{productName}</ThemedText>
           <ThemedText style={styles.text}>{price} ليرة سورية</ThemedText>
           <ThemedText style={styles.text}>{provinceName}</ThemedText>
         </ThemedView>
 
         <ThemedView style={styles.options}>
           <TouchableOpacity
-           
-            onPress={() =>
-              setOpenMenuId(isVisible ? null : id)
-            }
+            onPress={() => setOpenMenuId(isVisible ? null : id)}
           >
             <SimpleLineIcons name="options-vertical" size={24} color="black" />
           </TouchableOpacity>
@@ -82,7 +74,7 @@ export function Template({
                 },
               ]}
             >
-              <OptionMenu productUserId={productUserId}/>
+              <OptionMenu productUserId={productUserId} />
             </Animated.View>
           )}
         </ThemedView>
@@ -123,7 +115,7 @@ const styles = StyleSheet.create({
 
   textPostion: {
     alignItems: "flex-end",
-    flex: 1,
+
   },
 
   options: {
