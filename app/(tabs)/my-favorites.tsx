@@ -18,6 +18,7 @@ export default function MyFavorites() {
   const { likedProducts } = useFetchLikedProducts(user?.id);
   const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+
   const onPress = async (prodcutId: any) => {
     router.push("/product-details");
   };
@@ -43,9 +44,10 @@ export default function MyFavorites() {
                 setOpenMenuId={setOpenMenuId}
                 onPress={() => onPress(item.productId)}
                 price={item.price}
-                prodcutName={item.productName}
+                productName={item.productName}
                 provinceName={item.provinceName}
                 imageUrl={item.imageUrl}
+                productUserId={user?.id!}
               />
             ))}
           </View>

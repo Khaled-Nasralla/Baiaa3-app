@@ -1,3 +1,4 @@
+import { ProductPreviewDto } from "@/dtos/product-preview-dto";
 import { Product } from "@/entities/product";
 
 export interface GetProductsType{
@@ -6,6 +7,6 @@ export interface GetProductsType{
     loading : boolean
     product : Product | null
     error : string | null
-    products: Product[] | null
+    products: ProductPreviewDto[] | null
     
 }

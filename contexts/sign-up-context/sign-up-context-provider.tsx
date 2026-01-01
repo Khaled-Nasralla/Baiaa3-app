@@ -11,11 +11,11 @@ export function SignUpContextProvider({ children }: { children: ReactNode }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const signUp = async ({ id, name, surName, emailAddress, password }: User) => {
+    const signUp = async ({ id, name, surName, emailAddress, password,profileImage,createdAt }: User) => {
         setLoading(true);
         setError(null)
         try {
-            const response = await signUpApi({ id, name, surName, emailAddress, password });
+            const response = await signUpApi({ id, name, surName, emailAddress, password,profileImage,createdAt });
             const message = response?.data;
             return { success: true, message }
         } catch (err: any) {

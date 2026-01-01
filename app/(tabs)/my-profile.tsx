@@ -159,7 +159,7 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
           <TouchableOpacity
             style={styles.bargainButton}
             activeOpacity={0.85}
-            onPress={() => router.push("/")}
+            onPress={() => router.push("/bargains")}
           >
             {/* أيقونة */}
             <View style={styles.bargainIcon}>
@@ -218,9 +218,10 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
                 setOpenMenuId={setOpenMenuId}
                 onPress={() => onPressProduct(item.productId)}
                 price={item.price}
-                prodcutName={item.productName}
+                productName={item.productName}
                 provinceName={item.provinceName}
                 imageUrl={item.imageUrl}
+                productUserId={user?.id!}
               />
             )}
           </View>

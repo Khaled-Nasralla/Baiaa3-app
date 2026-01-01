@@ -18,7 +18,7 @@ export default function SignUpPage() {
       Alert.alert("passwod does not match")
       return;
     }
-    const result = await signUp({ id: "", name: name, surName: surname, emailAddress: emailAddress, password: password })
+    const result = await signUp({ id: "", name: name, surName: surname, emailAddress: emailAddress, password: password,profileImage:"",createdAt:"" });
     if (!result.success) {
       alert(result.message);
       return;

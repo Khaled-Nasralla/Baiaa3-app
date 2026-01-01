@@ -1,15 +1,14 @@
-import { usePagesContext } from "@/contexts/pages-context/pages-context-provider";
-import { Pages } from "@/enums/product-modals-options-enum";
+import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { ThemedText } from "../themed-text";
 import { ThemedView } from "../themed-view";
 
-export function OptionMenu() {
-  const { page } = usePagesContext();
+export function OptionMenu({ productUserId }: { productUserId: string | null }) {
+  const {user} = useSignInContext();
 
   return (
     <ThemedView style={styles.container}>
-      {page === Pages.MyProfile && (
+      {user?.id === productUserId && (
         <TouchableOpacity style={styles.option}>
           <ThemedText>حذف المنتج</ThemedText>
         </TouchableOpacity>

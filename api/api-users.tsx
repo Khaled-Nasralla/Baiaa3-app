@@ -1,12 +1,14 @@
 import { User } from "@/entities/user";
 import { api } from "./api";
 
-export async function signUpApi({ name, surName, emailAddress, password }: User) {
+export async function signUpApi({ name, surName, emailAddress, password,profileImage,createdAt }: User) {
   return api.post("/users/signup", {
     name,
     surName,
     emailAddress,
     password,
+    profileImage,
+    createdAt,
   });
 }
 

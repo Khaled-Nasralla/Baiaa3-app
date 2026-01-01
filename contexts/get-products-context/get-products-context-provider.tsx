@@ -1,4 +1,5 @@
 import { GetProductDetails, GetProducts } from "@/api/api-prodcuts";
+import { ProductPreviewDto } from "@/dtos/product-preview-dto";
 import { Product } from "@/entities/product";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { GetProductsType } from "./get-products.context-type";
@@ -6,7 +7,7 @@ import { GetProductsType } from "./get-products.context-type";
 const GetProductsContext = createContext<GetProductsType | undefined>(undefined);
 
 export function GetProductsProvider({ children }: { children: ReactNode }) {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductPreviewDto[]>([]);
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

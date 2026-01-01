@@ -10,10 +10,11 @@ type TemplateProps = {
   openMenuId: string | null;
   setOpenMenuId: (id: string | null) => void;
   onPress: () => void;
-  prodcutName: string | null;
+  productName: string | null;
   price: string | null;
   provinceName: string | null;
   imageUrl: string | null;
+  productUserId: string;
 };
 
 export function Template({
@@ -21,10 +22,11 @@ export function Template({
   openMenuId,
   setOpenMenuId,
   onPress,
-  prodcutName,
+  productName: prodcutName,
   price,
   provinceName,
   imageUrl,
+  productUserId
 }: TemplateProps) {
   const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
   const fullImageUrl = `${BASE_URL}${imageUrl}`;
@@ -80,7 +82,7 @@ export function Template({
                 },
               ]}
             >
-              <OptionMenu />
+              <OptionMenu productUserId={productUserId}/>
             </Animated.View>
           )}
         </ThemedView>

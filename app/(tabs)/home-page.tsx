@@ -6,6 +6,7 @@ import { Template } from "@/components/ui/template";
 import { images } from "@/constants/images";
 import { useGetProducts } from "@/contexts/get-products-context/get-products-context-provider";
 import { usePagesContext } from "@/contexts/pages-context/pages-context-provider";
+import { useSignInContext } from "@/contexts/sign-in-context/sign-in-context-provider";
 import { Pages } from "@/enums/product-modals-options-enum";
 import { useFetchProducts } from "@/hooks/fetch-products";
 import { useFocusEffect } from "@react-navigation/native";
@@ -159,6 +160,7 @@ export default function HomeScreen() {
   const { getProductDetails } = useGetProducts();
   const { products } = useFetchProducts();
   const { setPage } = usePagesContext();
+  const { user } = useSignInContext();
 
   const onPress = async (prodcutId: any) => {
     await getProductDetails(prodcutId);
@@ -206,9 +208,10 @@ export default function HomeScreen() {
               setOpenMenuId={setOpenMenuId}
               onPress={() => onPress(item.productId)}
               price={item.price}
-              prodcutName={item.productName}
+              productName={item.productName}
               provinceName={item.provinceName}
               imageUrl={item.imageUrl}
+              productUserId={user?.id!}
             />
           )}
         </ThemedView>
