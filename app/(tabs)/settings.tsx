@@ -148,43 +148,37 @@ export default function SettingsScreen() {
       {/* ================= Subscription Modal ================= */}
       <Modal visible={subscriptionModal} transparent animationType="slide">
         <View style={styles.modalContainer}>
-          <View style={styles.modalBox}>
+          <View style={styles.subscriptionModalBox}>
             <Text style={styles.modalTitle}>اختر نوع الاشتراك</Text>
 
             <TouchableOpacity
-              style={styles.subscriptionOption}
+              style={[styles.subscriptionOption, styles.freeOption]}
               onPress={() => {
                 setSubscriptionType("free");
                 setSubscriptionModal(false);
               }}
             >
-              <Text style={styles.subscriptionTitle}>
-                الاشتراك المجاني
-              </Text>
+              <Text style={styles.subscriptionTitle}>الاشتراك المجاني</Text>
               <Text style={styles.subscriptionDesc}>
                 نشر 5 منتجات فقط – تحذف بعد شهر
               </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.subscriptionOption}
+              style={[styles.subscriptionOption, styles.goldOption]}
               onPress={() => handleSubscriptionSelect("gold")}
             >
-              <Text style={styles.subscriptionTitle}>
-                الاشتراك الذهبي – 7$
-              </Text>
+              <Text style={styles.subscriptionTitle}>الاشتراك الذهبي – 7$</Text>
               <Text style={styles.subscriptionDesc}>
                 نشر 15 منشور – ظهور أعلى الصفحة
               </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.subscriptionOption}
+              style={[styles.subscriptionOption, styles.businessOption]}
               onPress={() => handleSubscriptionSelect("business")}
             >
-              <Text style={styles.subscriptionTitle}>
-                اشتراك الشركات – 12$
-              </Text>
+              <Text style={styles.subscriptionTitle}>اشتراك الشركات – 12$</Text>
               <Text style={styles.subscriptionDesc}>
                 عدد غير محدود – توثيق – ظهور أعلى الصفحة
               </Text>
