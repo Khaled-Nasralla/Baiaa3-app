@@ -1,6 +1,8 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
- const styles = StyleSheet.create({
+const { width } = Dimensions.get("window");
+
+const styles = StyleSheet.create({
   container: { padding: 20, backgroundColor: "#fff", flex: 1 },
 
   logoContainer: { alignItems: "center", marginTop: 20, marginBottom: 15 },
@@ -63,9 +65,11 @@ import { StyleSheet } from "react-native";
     marginRight: 6,
   },
 
+  /* ================== MODALS ================== */
   modalContainer: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "center",      // تمركز عمودي
+    alignItems: "center",          // تمركز أفقي
     backgroundColor: "rgba(0,0,0,0.5)",
   },
   modalBox: {
@@ -75,8 +79,42 @@ import { StyleSheet } from "react-native";
     borderRadius: 12,
   },
 
-  subscriptionOption: { marginBottom: 20 },
-  subscriptionTitle: { fontSize: 16, fontWeight: "bold" },
+  /* ================== Subscription Modal ================== */
+  subscriptionModalBox: {
+    width: width - 40,             // يترك 20px من كل جانب
+    maxWidth: 400,                 // لا يتجاوز عرض كبير
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 25,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 10,
+    elevation: 8,
+    alignSelf: "center",           // تمركز أفقي
+  },
+
+  subscriptionOption: {
+    padding: 15,
+    borderRadius: 15,
+    marginVertical: 8,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  freeOption: {
+    backgroundColor: "#e0f0ff", // أزرق فاتح
+  },
+  goldOption: {
+    backgroundColor: "#fff7e6", // أصفر فاتح
+  },
+  businessOption: {
+    backgroundColor: "#e6ffe6", // أخضر فاتح
+  },
+
+  subscriptionTitle: { fontSize: 16, fontWeight: "bold", color: "#333" },
   subscriptionDesc: { color: "#555", marginTop: 4 },
 
   modalClose: { marginTop: 10 },
@@ -119,4 +157,5 @@ import { StyleSheet } from "react-native";
     marginBottom: 10,
   },
 });
+
 export default styles;

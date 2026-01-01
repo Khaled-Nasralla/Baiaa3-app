@@ -15,23 +15,30 @@ import {
 } from "react-native";
 import styles from "../(styles)/settings";
 
+/* ================= Types ================= */
+type SubscriptionType = "free" | "gold" | "business";
 
 export default function SettingsScreen() {
-  const [subscriptionType, setSubscriptionType] = useState("free");
-  const [subscriptionModal, setSubscriptionModal] = useState(false);
-  const [contactModal, setContactModal] = useState(false);
-  const [passwordModal, setPasswordModal] = useState(false);
+  /* ================= State ================= */
+  const [subscriptionType, setSubscriptionType] =
+    useState<SubscriptionType>("free");
 
-  const [userMessage, setUserMessage] = useState("");
+  const [subscriptionModal, setSubscriptionModal] = useState<boolean>(false);
+  const [contactModal, setContactModal] = useState<boolean>(false);
+  const [passwordModal, setPasswordModal] = useState<boolean>(false);
 
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const {signOut} = useSignInContext()
+  const [userMessage, setUserMessage] = useState<string>("");
 
-  const currentPassword = "123456"; // كلمة السر الحالية تجريبية
+  const [oldPassword, setOldPassword] = useState<string>("");
+  const [newPassword, setNewPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  const getSubscriptionText = () => {
+  const { signOut } = useSignInContext();
+
+  const currentPassword = "123456"; // تجريبي
+
+  /* ================= Helpers ================= */
+  const getSubscriptionText = (): string => {
     switch (subscriptionType) {
       case "gold":
         return "الاشتراك الذهبي";
@@ -42,7 +49,7 @@ export default function SettingsScreen() {
     }
   };
 
-  const getSubscriptionIcon = () => {
+  const getSubscriptionIcon = (): any => {
     switch (subscriptionType) {
       case "gold":
         return "trophy-outline";
@@ -53,27 +60,36 @@ export default function SettingsScreen() {
     }
   };
 
-   const handleSignOut = () => {
-   
-     signOut()
-     router.replace("/sign-in-page");
-  
-   }
+  const handleSignOut = (): void => {
+    signOut();
+    router.replace("/sign-in-page");
+  };
 
+  const handleSubscriptionSelect = async (
+    type: SubscriptionType
+  ): Promise<void> => {
+    await AsyncStorage.setItem("pendingSubscription", type);
+    setSubscriptionType(type);
+    setSubscriptionModal(false);
+    router.replace("/payment-method"); 
+  };
+
+  /* ================= UI ================= */
   return (
     <ScrollView style={styles.container}>
-      {/* ------- اللوغو ------- */}
+      {/* ---------- Logo ---------- */}
       <View style={styles.logoContainer}>
         <Image source={images.logo} style={styles.logo} />
 
-        {/* -------- بطاقة حالة الاشتراك -------- */}
         <View style={styles.subscriptionCard}>
           <Ionicons name={getSubscriptionIcon()} size={24} color="#fff" />
-          <Text style={styles.subscriptionLabel}>{getSubscriptionText()}</Text>
+          <Text style={styles.subscriptionLabel}>
+            {getSubscriptionText()}
+          </Text>
         </View>
       </View>
 
-      {/* ------- تعديل كلمة السر ------- */}
+      {/* ---------- Change Password ---------- */}
       <TouchableOpacity
         style={styles.optionButton}
         onPress={() => setPasswordModal(true)}
@@ -82,7 +98,7 @@ export default function SettingsScreen() {
         <Text style={styles.optionText}>تعديل كلمة السر</Text>
       </TouchableOpacity>
 
-      {/* ------- زر تغيير الاشتراك ------- */}
+      {/* ---------- Change Subscription ---------- */}
       <TouchableOpacity
         style={styles.optionButton}
         onPress={() => setSubscriptionModal(true)}
@@ -91,16 +107,22 @@ export default function SettingsScreen() {
         <Text style={styles.optionText}>تغيير الاشتراك</Text>
       </TouchableOpacity>
 
-      {/* ------- شروط الاستخدام و سياسة الخصوصية ------- */}
+      {/* ---------- Terms ---------- */}
       <TouchableOpacity
         style={styles.optionButton}
         onPress={() => router.push("/terms")}
       >
-        <Ionicons name="document-text-outline" size={22} color="#007bff" />
-        <Text style={styles.optionText}>شروط الاستخدام و سياسة الخصوصية</Text>
+        <Ionicons
+          name="document-text-outline"
+          size={22}
+          color="#007bff"
+        />
+        <Text style={styles.optionText}>
+          شروط الاستخدام و سياسة الخصوصية
+        </Text>
       </TouchableOpacity>
 
-      {/* ------- مركز المساعدة ------- */}
+      {/* ---------- Help Center ---------- */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>مركز المساعدة</Text>
 
@@ -108,25 +130,29 @@ export default function SettingsScreen() {
           style={styles.optionButton}
           onPress={() => setContactModal(true)}
         >
-          <Ionicons name="chatbox-ellipses-outline" size={22} color="#007bff" />
+          <Ionicons
+            name="chatbox-ellipses-outline"
+            size={22}
+            color="#007bff"
+          />
           <Text style={styles.optionText}>تواصل معنا</Text>
         </TouchableOpacity>
       </View>
 
-      {/* ------- تسجيل الخروج ------- */}
+      {/* ---------- Logout ---------- */}
       <TouchableOpacity style={styles.logoutBtn} onPress={handleSignOut}>
         <Ionicons name="log-out-outline" size={22} color="red" />
         <Text style={styles.logoutText}>تسجيل الخروج</Text>
       </TouchableOpacity>
 
-      {/* ----------------- نافذة تغيير الاشتراك ----------------- */}
+      {/* ================= Subscription Modal ================= */}
       <Modal visible={subscriptionModal} transparent animationType="slide">
         <View style={styles.modalContainer}>
-          <View style={styles.modalBox}>
+          <View style={styles.subscriptionModalBox}>
             <Text style={styles.modalTitle}>اختر نوع الاشتراك</Text>
 
             <TouchableOpacity
-              style={styles.subscriptionOption}
+              style={[styles.subscriptionOption, styles.freeOption]}
               onPress={() => {
                 setSubscriptionType("free");
                 setSubscriptionModal(false);
@@ -139,55 +165,40 @@ export default function SettingsScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.subscriptionOption}
-              onPress={() => {
-                setSubscriptionType("gold");
-                setSubscriptionModal(false);
-              }}
+              style={[styles.subscriptionOption, styles.goldOption]}
+              onPress={() => handleSubscriptionSelect("gold")}
             >
-              
-             <TouchableOpacity
-  style={styles.subscriptionOption}
-  onPress={async () => {
-    await AsyncStorage.setItem("pendingSubscription", "gold");
-    setSubscriptionModal(false);
-    router.push("/verify-id");
-  }}
->
-  <Text style={styles.subscriptionTitle}>الاشتراك الذهبي – 7$</Text>
-  <Text style={styles.subscriptionDesc}>
-    نشر 15 منشور – ظهور أعلى الصفحة – حذف بعد شهر
-  </Text>
-</TouchableOpacity>
+              <Text style={styles.subscriptionTitle}>الاشتراك الذهبي – 7$</Text>
+              <Text style={styles.subscriptionDesc}>
+                نشر 15 منشور – ظهور أعلى الصفحة
+              </Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity
-  style={styles.subscriptionOption}
-  onPress={async () => {
-    await AsyncStorage.setItem("pendingSubscription", "business");
-    setSubscriptionModal(false);
-    router.push("/verify-id");
-  }}
->
-  <Text style={styles.subscriptionTitle}>اشتراك الشركات – 12$</Text>
-  <Text style={styles.subscriptionDesc}>
-    عدد غير محدود – توثيق – ظهور أعلى الصفحة
-  </Text>
-</TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.subscriptionOption, styles.businessOption]}
+              onPress={() => handleSubscriptionSelect("business")}
+            >
+              <Text style={styles.subscriptionTitle}>اشتراك الشركات – 12$</Text>
+              <Text style={styles.subscriptionDesc}>
+                عدد غير محدود – توثيق – ظهور أعلى الصفحة
+              </Text>
+            </TouchableOpacity>
 
+            <TouchableOpacity
+              style={styles.modalClose}
+              onPress={() => setSubscriptionModal(false)}
+            >
               <Text style={styles.cancelText}>إغلاق</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
 
-      {/* ----------------- نافذة تواصل معنا ----------------- */}
+      {/* ================= Contact Modal ================= */}
       <Modal visible={contactModal} transparent animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.modalBox}>
             <Text style={styles.modalTitle}>تواصل معنا</Text>
-            <Text style={styles.subscriptionDesc}>
-              نحن دائمًا بجانبك، يمكنك كتابة رسالتك أدناه:
-            </Text>
 
             <TextInput
               style={styles.userMessageInput}
@@ -200,12 +211,12 @@ export default function SettingsScreen() {
             <TouchableOpacity
               style={styles.sendButton}
               onPress={() => {
-                if (userMessage.trim().length > 0) {
-                  alert("فريق بياع سوف يرد على رسالتك بأقرب وقت ممكن");
-                  setUserMessage("");
-                } else {
-                  alert("الرجاء كتابة رسالة قبل الإرسال");
+                if (!userMessage.trim()) {
+                  alert("الرجاء كتابة رسالة");
+                  return;
                 }
+                alert("سيتم الرد عليك بأقرب وقت");
+                setUserMessage("");
               }}
             >
               <Text style={styles.sendButtonText}>إرسال</Text>
@@ -221,35 +232,32 @@ export default function SettingsScreen() {
         </View>
       </Modal>
 
-      {/* ----------------- نافذة تغيير كلمة السر ----------------- */}
+      {/* ================= Password Modal ================= */}
       <Modal visible={passwordModal} transparent animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalBox}>
             <Text style={styles.modalTitle}>تغيير كلمة المرور</Text>
 
-            <Text style={styles.inputLabel}>كلمة المرور القديمة</Text>
             <TextInput
               style={styles.input}
               secureTextEntry
-              placeholder="أدخل كلمة المرور القديمة"
+              placeholder="كلمة المرور القديمة"
               value={oldPassword}
               onChangeText={setOldPassword}
             />
 
-            <Text style={styles.inputLabel}>كلمة المرور الجديدة</Text>
             <TextInput
               style={styles.input}
               secureTextEntry
-              placeholder="أدخل كلمة المرور الجديدة"
+              placeholder="كلمة المرور الجديدة"
               value={newPassword}
               onChangeText={setNewPassword}
             />
 
-            <Text style={styles.inputLabel}>تأكيد كلمة المرور الجديدة</Text>
             <TextInput
               style={styles.input}
               secureTextEntry
-              placeholder="أعد إدخال كلمة المرور"
+              placeholder="تأكيد كلمة المرور"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
             />
@@ -258,21 +266,20 @@ export default function SettingsScreen() {
               style={styles.sendButton}
               onPress={() => {
                 if (oldPassword !== currentPassword) {
-                  alert("❌ كلمة المرور القديمة غير صحيحة");
+                  alert("كلمة المرور القديمة غير صحيحة");
                   return;
                 }
                 if (newPassword.length < 6) {
-                  alert("❌ كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل");
+                  alert("كلمة المرور قصيرة");
                   return;
                 }
                 if (newPassword !== confirmPassword) {
-                  alert("❌ كلمتا المرور غير متطابقتين");
+                  alert("كلمتا المرور غير متطابقتين");
                   return;
                 }
 
-                alert("✔ تم تغيير كلمة المرور بنجاح!");
+                alert("تم تغيير كلمة المرور بنجاح");
                 setPasswordModal(false);
-
                 setOldPassword("");
                 setNewPassword("");
                 setConfirmPassword("");
@@ -293,4 +300,3 @@ export default function SettingsScreen() {
     </ScrollView>
   );
 }
-
