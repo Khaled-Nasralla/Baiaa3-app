@@ -1,5 +1,5 @@
 import { SimpleLineIcons } from "@expo/vector-icons";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Animated, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { ThemedText } from "../themed-text";
 import { ThemedView } from "../themed-view";
@@ -28,28 +28,13 @@ export function Template({id, openMenuId, setOpenMenuId, onPress, productName,
 
   const slideAnim = useRef(new Animated.Value(0)).current;
   const isVisible = openMenuId === id;
-  const [menuVisible, setMenuVisible] = useState(isVisible);
 
   useEffect(() => {
-    if (isVisible) {
-      setMenuVisible(true);
-      Animated.timing(slideAnim, {
-        toValue: 1,
-        duration: 200,
-        useNativeDriver: true,
-      }).start();
-    } else {
-      Animated.timing(slideAnim, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: true,
-      }).start(({ finished }) => {
-        if (finished) {
-          setMenuVisible(false);
-          setOpenMenuId(null);
-        }
-      });
-    }
+    Animated.timing(slideAnim, {
+      toValue: isVisible ? 1 : 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
   }, [isVisible]);
 
   return (
@@ -72,7 +57,7 @@ export function Template({id, openMenuId, setOpenMenuId, onPress, productName,
             <SimpleLineIcons name="options-vertical" size={24} color="black" />
           </TouchableOpacity>
 
-          {menuVisible && (
+          {isVisible && (
             <Animated.View
               style={[
                 styles.menu,
