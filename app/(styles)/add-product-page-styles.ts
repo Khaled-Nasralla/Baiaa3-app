@@ -1,51 +1,47 @@
 import { StyleSheet } from "react-native";
 
+const GREEN = "#69ab75ff";
+const BEIGE = "#d3b78fff"; // لون المستعمل أغمق شوي
+const BORDER = "#E2E2E2";
+const TEXT = "#222";
+const BG = "#F6F7F8";
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: BG,
     paddingHorizontal: 16,
   },
 
   sectionTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "700",
-    color: "#111",
+    color: TEXT,
     textAlign: "right",
-    marginTop: 24,
     marginBottom: 12,
   },
 
   inputStyle: {
-    flex:1,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#fff",
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: "#d6d6d6",
-    borderRadius: 14,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    borderColor: BORDER,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
     fontSize: 15,
-    color: "#222",
-    marginBottom: 12,
     textAlign: "right",
-  },
-
-  textArea: {
-    height: 90,
-    textAlignVertical: "top",
+    marginBottom: 12,
   },
 
   priceInputContainer: {
     flexDirection: "row-reverse",
     alignItems: "center",
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#fff",
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: "#d6d6d6",
-    borderRadius: 14,
-    paddingHorizontal: 14,
+    borderColor: BORDER,
+    paddingHorizontal: 16,
     marginBottom: 12,
-    flexWrap:"wrap"
-    
   },
 
   priceInput: {
@@ -55,40 +51,57 @@ const styles = StyleSheet.create({
   },
 
   currencySymbolStyle: {
-    fontSize: 15,
-    color: "#444",
+    color: "#666",
     marginLeft: 8,
   },
 
   pickerWrapper: {
+    backgroundColor: "#fff",
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: "#d6d6d6",
-    borderRadius: 14,
-    backgroundColor: "#f9f9f9",
+    borderColor: BORDER,
     marginBottom: 12,
     overflow: "hidden",
   },
 
-  picker: {
-    height: 50,
-    direction: "rtl",
+  conditionContainer: {
+    flexDirection: "row-reverse",
+    gap: 12,
+    marginBottom: 16,
+  },
+
+  conditionButton: {
+    flex: 1,
+    paddingVertical: 14,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: BORDER,
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+
+  conditionText: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: TEXT,
   },
 
   imageBox: {
     height: 140,
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#d6d6d6",
-    borderRadius: 16,
+    borderStyle: "dashed",
+    borderColor: BORDER,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#fff",
     marginVertical: 16,
-    backgroundColor: "#f9f9f9",
   },
 
   uploadIcon: {
-    width: 56,
-    height: 56,
-    resizeMode: "contain",
+    width: 52,
+    height: 52,
+    opacity: 0.6,
   },
 
   imagesPreviewContainer: {
@@ -98,47 +111,32 @@ const styles = StyleSheet.create({
   },
 
   imageWrapper: {
-    position: "relative",
     margin: 6,
+    position: "relative",
   },
 
   previewImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 12,
+    width: 84,
+    height: 84,
+    borderRadius: 14,
   },
 
   closeButton: {
     position: "absolute",
     top: -6,
     right: -6,
-    backgroundColor: "#ff3b30",
+    backgroundColor: "#000",
     width: 22,
     height: 22,
     borderRadius: 11,
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
   },
 
   closeButtonText: {
     color: "#fff",
-    fontWeight: "bold",
-  },
-
-  submitButton: {
-    backgroundColor: "#1b8bff",
-    paddingVertical: 16,
-    borderRadius: 16,
-    alignItems: "center",
-    marginBottom: 30,
-  },
-
-  submitButtonText: {
-    color: "#fff",
-    fontSize: 17,
     fontWeight: "700",
   },
 });
-
 
 export default styles;
