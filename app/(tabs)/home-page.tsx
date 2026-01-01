@@ -11,28 +11,13 @@ import { Pages } from "@/enums/product-modals-options-enum";
 import { useFetchProducts } from "@/hooks/fetch-products";
 import { useFocusEffect } from "@react-navigation/native";
 import { router } from "expo-router";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import homeStyles from "../(styles)/home-page-styles";
 
 
-/* =========================
-   منتجات وهمية (أمثلة)
-   ========================= */
-const PRODUCTS = [
-  { id: "1", title: "سيارة BMW 2019 بحالة ممتازة" },
-  { id: "2", title: "دراجة نارية هوندا جديدة" },
-  { id: "3", title: "iPhone 13 Pro Max مستعمل" },
-  { id: "4", title: "لابتوب Dell i7 للألعاب" },
-  { id: "5", title: "جاكيت شتوي رجالي" },
-  { id: "6", title: "عدة ميكانيك كاملة" },
-  { id: "7", title: "عطر فرنسي أصلي" },
-  { id: "8", title: "وظيفة مبرمج React Native" },
-  { id: "9", title: "مطعم شاورما قريب" },
-  { id: "10", title: "غسالة LG أوتوماتيك" },
-  { id: "11", title: "كنبة زاوية حديثة" },
-];
+
 
 /* =========================
    100 كلمة مفتاحية لكل فئة
@@ -167,17 +152,6 @@ export default function HomeScreen() {
     router.push("/product-details");
   };
 
-  const filteredProducts = useMemo(() => {
-    if (selectedCategory === "allProduts") return PRODUCTS;
-
-    const keywords = CATEGORY_KEYWORDS[selectedCategory] || [];
-
-    return PRODUCTS.filter((product) =>
-      keywords.some((word) =>
-        product.title.toLowerCase().includes(word.toLowerCase())
-      )
-    );
-  }, [selectedCategory]);
 
   useFocusEffect(
     useCallback(() => {

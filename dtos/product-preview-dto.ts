@@ -4,5 +4,6 @@ productName : string,
 price : string,
 provinceName : string,
 categoryName : string,
-imageUrl : string
+imageUrl : string,
+userId : string
 }
