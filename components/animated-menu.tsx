@@ -1,7 +1,6 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import React, { useEffect, useRef } from 'react';
+import { Animated, StyleSheet } from 'react-native';
+
 
 interface AnimatedMenuProps {
   isActive: boolean;
@@ -9,34 +8,43 @@ interface AnimatedMenuProps {
 }
 
 export const AnimatedMenu: React.FC<AnimatedMenuProps> = ({ isActive, children }) => {
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: withTiming(isActive ? 1.02 : 1, { duration: 250 }) }],
-    shadowOpacity: withTiming(isActive ? 0.25 : 0.05, { duration: 250 }),
-    shadowRadius: withTiming(isActive ? 6 : 3, { duration: 250 }),
-  }));
+
+    const slideAnim = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    Animated.timing(slideAnim, {
+      toValue: isActive ? 1 : 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  }, [isActive]);
 
   return (
-    <Animated.View style={[styles.container, animatedStyle]}>
-      <LinearGradient
-        colors={isActive ? ['#cce7ff', '#e6f2ff'] : ['#fff', '#fff']}
-        style={styles.gradient}
-      >
+    <Animated.View style={[styles.menu ,{
+                      opacity: slideAnim,
+                      transform: [
+                        {
+                          translateY: slideAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [40, 0],
+                          }),
+                        },
+                      ],
+                    },]}>
         {children}
-      </LinearGradient>
     </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 16,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    elevation: 2,
-  },
-  gradient: {
-    borderRadius: 16,
-    padding: 16,
+  menu: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 8,
+    elevation: 6,
+    zIndex: 100,
+    minWidth: 120,
   },
 });

@@ -1,6 +1,12 @@
 import { SimpleLineIcons } from "@expo/vector-icons";
-import { useEffect, useRef } from "react";
-import { Animated, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { useFocusEffect } from "expo-router";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import { AnimatedMenu } from "../animated-menu";
 import { ThemedText } from "../themed-text";
 import { ThemedView } from "../themed-view";
 import { OptionMenu } from "./menu";
@@ -17,74 +23,89 @@ type TemplateProps = {
   productUserId: string;
 };
 
-export function Template({id, openMenuId, setOpenMenuId, onPress, productName,
+export function Template({
+  id,
+  openMenuId,
+  setOpenMenuId,
+  onPress,
+  productName,
   price,
   provinceName,
   imageUrl,
-  productUserId
+  productUserId,
 }: TemplateProps) {
   const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
   const fullImageUrl = `${BASE_URL}${imageUrl}`;
 
-  const slideAnim = useRef(new Animated.Value(0)).current;
+
+  useFocusEffect(() => {
+    return () => {
+      setOpenMenuId(null);
+    };
+  });
+
+
   const isVisible = openMenuId === id;
 
-  useEffect(() => {
-    Animated.timing(slideAnim, {
-      toValue: isVisible ? 1 : 0,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  }, [isVisible]);
-
   return (
-    <ThemedView style={styles.card}>
-      <TouchableOpacity onPress={onPress}>
-        <Image source={{ uri: fullImageUrl }} style={styles.image} />
-      </TouchableOpacity>
+    <>
+      {/* 🔹 Overlay to detect outside clicks */}
+      {isVisible && (
+        <Pressable
+          style={styles.overlay}
+          onPress={() => setOpenMenuId(null)}
+        />
+      )}
 
-      <ThemedView style={styles.cardDetails}>
-        <ThemedView style={styles.textPostion}>
-          <ThemedText style={styles.text}>{productName}</ThemedText>
-          <ThemedText style={styles.text}>{price} ليرة سورية</ThemedText>
-          <ThemedText style={styles.text}>{provinceName}</ThemedText>
-        </ThemedView>
+      <ThemedView style={styles.card}>
+        <TouchableOpacity onPress={onPress}>
+          <Image source={{ uri: fullImageUrl }} style={styles.image} />
+        </TouchableOpacity>
 
-        <ThemedView style={styles.options}>
-          <TouchableOpacity
-            onPress={() => setOpenMenuId(isVisible ? null : id)}
-          >
-            <SimpleLineIcons name="options-vertical" size={24} color="black" />
-          </TouchableOpacity>
+        <ThemedView style={styles.cardDetails}>
+          <ThemedView style={styles.textPostion}>
+            <ThemedText style={styles.text}>{productName}</ThemedText>
+            <ThemedText style={styles.text}>{price} ليرة سورية</ThemedText>
+            <ThemedText style={styles.text}>{provinceName}</ThemedText>
+          </ThemedView>
 
-          {isVisible && (
-            <Animated.View
-              style={[
-                styles.menu,
-                {
-                  opacity: slideAnim,
-                  transform: [
-                    {
-                      translateY: slideAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [40, 0],
-                      }),
-                    },
-                  ],
-                },
-              ]}
+          <ThemedView style={styles.options}>
+            {/* ✅ Options button */}
+            <TouchableOpacity
+              onPress={() => setOpenMenuId(isVisible ? null : id)}
             >
-              <OptionMenu productUserId={productUserId} />
-            </Animated.View>
-          )}
+              <SimpleLineIcons name="options-vertical" size={24} color="black" />
+            </TouchableOpacity>
+
+            {/* ✅ Menu itself (clicking here won't close it) */}
+            {isVisible && (
+              <Pressable onPress={() => { }}>
+                <AnimatedMenu isActive={isVisible}>
+                  <OptionMenu productId= {id}
+                  productUserId={productUserId}
+                  onClose={() => setOpenMenuId(null)} 
+                  />
+                </AnimatedMenu>
+              </Pressable>
+            )}
+          </ThemedView>
         </ThemedView>
       </ThemedView>
-    </ThemedView>
+    </>
   );
 }
 
 
+
 const styles = StyleSheet.create({
+  overlay: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+  },
   card: {
     width: "48%",
     backgroundColor: "#fff",
@@ -92,6 +113,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 12,
     elevation: 3,
+    zIndex: 2,
   },
 
   image: {
@@ -123,6 +145,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     flex: 1,
     position: "relative",
+     zIndex: 3,
   },
 
   menu: {

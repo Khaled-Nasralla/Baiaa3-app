@@ -6,12 +6,17 @@ const PagesContext = createContext<PagesContextType | undefined>(undefined);
 
 export function PagesContextProvider({children} :{children : ReactNode}){
     const [page, setCurrentPages] = useState<Pages>();
+    const [menuOpen,setMenuOpen] = useState<boolean>(false);
 
     const setPage = (pages : Pages)=>{
      setCurrentPages(pages);
     }
 
-    return <PagesContext.Provider value={{page,setPage}}>
+    const setMenuOpenState = (isOpen:boolean)=>{
+        setMenuOpen(isOpen);
+    }
+
+    return <PagesContext.Provider value={{page,setPage ,menuOpen,setMenuOpen}}>
         {children}
     </PagesContext.Provider>
 

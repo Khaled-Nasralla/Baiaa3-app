@@ -39,6 +39,10 @@ export async function GetProvince():Promise<Province[]> {
      return response.data.data;  
 }
 
+export async function DeleteProduct(productId:string):Promise<void> {
+    await api.delete(`/product/delete/${productId}`);
+}
+
 
 
 

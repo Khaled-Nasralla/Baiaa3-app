@@ -43,9 +43,7 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
     router.push("/product-details");
   };
 
-  /* ===== رفع صورة البروفايل ===== */
-  useEffect(() => {
-    if (!user || !profileImage) return;
+
   useFocusEffect(
     useCallback(() => {
       setPage(Pages.MyProfile);
@@ -55,22 +53,6 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
   useEffect(() => {
     if (!user || !profileImage) return;
 
-    const formData = new FormData();
-    formData.append("UserId", user.id);
-    formData.append("ProfileImage", {
-      uri: profileImage.uri,
-      name: `profile-${user.id}.jpg`,
-      type: "image/jpeg",
-    } as any);
-
-    const sendPhoto = async () => {
-      const imageUrl = await UpdateProfileImage({ formData });
-      setImageUrl(imageUrl);
-      user.profileImage = imageUrl;
-    };
-
-    sendPhoto();
-  }, [profileImage, user]);
     const formData = new FormData();
     formData.append("UserId", user.id);
     formData.append("ProfileImage", {
@@ -111,7 +93,7 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
   const outgoingCount = 1;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }} >
       <ScrollView
         contentContainerStyle={[
           styles.container,
@@ -120,7 +102,7 @@ export default function ProfileScreen({ isOwner = true }: ProfileProps) {
         showsVerticalScrollIndicator
       >
         {/* ===== Header ===== */}
-        <View style={styles.header}>
+        <View style={styles.header} >
           <TouchableOpacity onPress={pickImage}>
             {user?.profileImage ? (
               <Image
